@@ -17,8 +17,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(config.get('cookiePrivateKey')));
 
 
-let folder = path.join(__dirname, "/public/");
-app.use("/", express.static(folder));
 
 if (process.env.NODE_ENV === 'development') {
   function enableCORSMiddleware (req,res,next) {
@@ -29,14 +27,18 @@ if (process.env.NODE_ENV === 'development') {
   app.use(enableCORSMiddleware);
 }
 
+require("./startup/routes")(app);
+let folder = path.join(__dirname, "/public/");
+app.use("/", express.static(folder));
 
 
 // --------------------------------------------------------------------------------------------------
-const passport = require('./routes/passport.js');
-app.use('/', passport);
-
-const testing = require('./routes/testing.js');
-app.use('/api/test/', testing);
+// require("./startup/routes")(app);
+// const passport = require('./routes/passport.js');
+// app.use('/', passport);
+//
+// const testing = require('./routes/testing.js');
+// app.use('/api/test/', testing);
 
 // --------------------------------------------------------------------------------------------------
 

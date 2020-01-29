@@ -57,7 +57,8 @@ const getCleanedEmails = emails => {
     cleanedEmails.push({
       sender,
       sentTo,
-      sendersDomain
+      sendersDomain,
+      id: email.id
     });
 
 
@@ -80,9 +81,68 @@ const clean = emails => {
   };
 };
 
+/**
+ * Sorts labels
+ * @param labels
+ * @returns {unknown[]}
+ */
+const sortLabels = labels => {
+	return _.sortBy(labels, 'name');
+};
+
+
+const cleanLabels = labels => {
+  let cleanedLabels = [];
+  for(let label of labels) {
+  	if (!label.color){
+  	  label.color = {
+  	    textColor: '',
+        backgroundColor: ''
+      }
+    }
+  	cleanedLabels.push(label)
+  }
+  
+  return _.sortBy(cleanedLabels, 'name');
+};
+
+const cleanFilters = (filters, labels) => {
+  let cleanedFilters = [];
+  
+  const getActions = (actionList) => {
+    if (!actionList) {
+      return [];
+    }
+    
+  	let actions = [];
+    for(let action of actionList) {
+  		actions.push({
+        id: action,
+        name: _.findWhere(labels, {id: action}).name
+      })
+  	}
+    return actions;
+  };
+  
+  for(let filter of filters) {
+    let newFilter = {
+      id: filter.id
+    };
+    newFilter.addLabels = filter.action.addLabelIds ? getActions(filter.action.addLabelIds) : [];
+    newFilter.removeLabels = filter.action.removeLabelIds ?  getActions(filter.action.removeLabelIds) : [];
+    newFilter.sentToAddress = filter.criteria.to ? filter.criteria.to.split(',')  : [];
+    newFilter.fromAddress = filter.criteria['from'] ? filter.criteria['from'].split(',')  : [];
+    
+    cleanedFilters.push(newFilter);
+  }
+  return cleanedFilters;
+};
 
 module.exports = {
-  clean
+  clean,
+  sortLabels,
+  cleanLabels,
+  cleanFilters
 };
 
 

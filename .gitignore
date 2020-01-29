@@ -5,6 +5,7 @@ package-lock.json
 node_modules
 /server/config/credentials.js
 /server/config/default.json
-/server/data/dummyEmails.js
-/server/data/dummyEmailsResponse.js
+/server/data/ignore/dummyEmails.js
+/server/data/ignore/dummyEmailsCleaned.js
 /server/scratch.js
+/server/data/ignore/

@@ -141,11 +141,34 @@ const getAllInfo = gmail => {
 };
 
 
+/**
+ * Create a filter
+ * @param gmail
+ * @param filter {object}
+ * @returns {*}
+ */
+const createFilter = (gmail, filter) => {
+	return gmail.users.settings.filters.create({
+    userId: 'me',
+    resource: filter
+  })
+};
+
+
+const createLabel = (gmail, label) => {
+  console.log(`FILE: gmail.js createLabel() | : \n`, );
+  return gmail.users.labels.create({
+    userId: 'me',
+    resource: label
+  })
+};
 
 
 
 
 module.exports = {
+  createLabel,
+  createFilter,
   getGmail,
   getToken,
   getMessage,

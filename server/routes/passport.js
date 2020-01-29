@@ -6,14 +6,12 @@ const users = require('../db/users.js');
 router.use(passport.initialize());
 router.use(passport.session());
 // --------------------------------------------------------------------------------------------------
-// ***
-
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 
 passport.use(new GoogleStrategy({
-    clientID: clientId,
-    clientSecret: clientSecret,
+    clientID: config.get('client.id'),
+    clientSecret: config.get('client.secret'),
     callbackURL: "http://localhost:3000/auth/google/callback",
   },
   function (accessToken, refreshToken, profile, cb) {
@@ -36,7 +34,6 @@ passport.use(new GoogleStrategy({
         console.error(`FILE: passport.js () | ERROR: \n`, error);
         return cb(error, null);
       })
-    // return cb(null, user);
   }
 ));
 
