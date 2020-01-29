@@ -4,20 +4,26 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "dev": "NODE_ENV=development nodemon ./bin/www"
   },
   "dependencies": {
     "@sentry/node": "^5.11.1",
+    "bluebird": "^3.7.2",
+    "config": "^3.2.5",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
-    "firebase": "^7.7.0",
+    "google-auth-library": "^5.9.1",
+    "googleapis": "^47.0.0",
     "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
+    "joi": "^13.7.0",
+    "knex": "^0.20.8",
     "morgan": "^1.9.1",
     "passport": "^0.4.1",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "pg": "^7.17.1",
+    "underscore": "^1.9.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
