@@ -1,21 +1,20 @@
 import React from 'react';
 import {
-  MDBBox,
   MDBListGroup,
-  MDBListGroupItem,
-  MDBContainer,
-  MDBBtn,
-  MDBIcon,
-  MDBPopover,
-  MDBPopoverBody,
-  MDBPopoverHeader
+  MDBListGroupItem
 } from "mdbreact";
 
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
+// --------------------------------------------------------------------------------------------------
+
+/**
+ * Wrapper for getting list item
+ * @param label
+ * @param index
+ * @returns {*}
+ */
 const getLabel = (label, index) => {
-
   return (
     <MDBListGroupItem
       key={ index }
@@ -26,47 +25,25 @@ const getLabel = (label, index) => {
       }}
     >
       { label.name }
-      
     </MDBListGroupItem>
   );
-
 };
 
-const getLabelStructure = (labels) => {
-  let labelStructure = {};
-  
-  const addLabel = () => {
-  
-  };
-  
-  for(let label of labels) {
-  
-  }
-};
 
 
 const CurrentLabels = props => {
   const email = useSelector(state => state.email);
   
   return (
-    <MDBContainer id="current-labels">
+    <div id="current-labels"  className='module'>
       <h2>Current Labels</h2>
-      <MDBContainer>
+      <div>
         <MDBListGroup style={ { width: "22rem" } }>
           { email.labels.map((label, index) => getLabel(label, index)) }
         </MDBListGroup>
-      </MDBContainer>
-    </MDBContainer>
+      </div>
+    </div>
   );
 };
 
 export default CurrentLabels;
-
-   // <div id="current-labels">
-   //    <h2>Current Labels</h2>
-   //    <MDBContainer>
-   //      <MDBListGroup style={ { width: "22rem" } }>
-   //        { email.labels.map((label, index) => getLabel(label, index)) }
-   //      </MDBListGroup>
-   //    </MDBContainer>
-   //  </div>

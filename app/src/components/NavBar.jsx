@@ -84,7 +84,7 @@ class NavBar extends Component {
               { navLink('Sorting', '/sorting', <MDBIcon icon="random"/>) }
               { navLink('Settings', '/settings', <MDBIcon icon="cog"/>) }
   
-              { user.loggedIn ? <MDBBtn color="danger"
+              { user.loggedIn ? <MDBBtn color="danger" size="sm"
                 onClick={ () => signOut() }>Sign Out</MDBBtn> : null }
                 
               {/* Show log in if user not signed in */}

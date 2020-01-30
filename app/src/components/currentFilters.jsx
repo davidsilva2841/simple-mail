@@ -7,32 +7,45 @@ import {
 } from "mdbreact";
 
 import { useSelector, useDispatch } from "react-redux";
-import FilterButton from "./filterButton";
+import FilterLabelButton from "./filterLabelButton";
+import FilterAddressButton from "./filterAddressButton";
+import FilterEditButton from "./filterEditButton";
+import FilterDeleteButton from "./filterDeleteButton";
+import NewFilterButton from "../components/newFilterButton";
 
 const columns = [
   {
     label: 'Sent to',
     field: 'sentToAddress',
     sort: 'asc',
-    width: 150
+    
   },
   {
     label: 'From Address',
     field: 'fromAddress',
     sort: 'asc',
-    width: 150
+    width: 300
   },
   {
     label: 'Add Labels',
     field: 'addLabels',
     sort: 'asc',
-    width: 150
   },
   {
     label: 'Remove Labels',
     field: 'removeLabels',
     sort: 'asc',
-    width: 150
+  },
+  {
+    label: 'Edit',
+    field: 'editFilter',
+    sort: 'asc',
+    width: 10
+  },
+  {
+    label: 'Delete',
+    field: 'deleteFilter',
+    width: 10
   },
 ];
 
@@ -40,31 +53,46 @@ const buildRows = filters => {
 	let rows = [];
   for(let filter of filters) {
     let row = {};
+    
+    
+    row.editFilter = <FilterEditButton filter={filter}/>;
+    row.deleteFilter = <FilterDeleteButton filter={filter}/>;
+    
     row.sentToAddress = filter.sentToAddress.map((sentTo, key) =>
-      <FilterButton
+      <FilterAddressButton
+        type='sentToAddress'
         id={filter.id}
+        data={sentTo}
         display={sentTo}
         key={key}
       />
     );
+    
 		row.fromAddress = filter.fromAddress.map((fromAddress, key) =>
-      <FilterButton
+      <FilterAddressButton
+        type='fromAddress'
         id={filter.id}
+        data={fromAddress}
         display={fromAddress}
         key={key}
       />
 		);
+		
 		row.addLabels = filter.addLabels.map((addLabel, key) =>
-      <FilterButton
+      <FilterLabelButton
+        type='addLabel'
         id={filter.id}
+        data={addLabel}
         display={addLabel.name}
         key={key}
       />
     );
 		
 		row.removeLabels = filter.removeLabels.map((removeLabel, key) =>
-      <FilterButton
+      <FilterLabelButton
+        type='removeLabel'
         id={filter.id}
+        data={removeLabel}
         display={removeLabel.name}
         key={key}
       />
@@ -85,18 +113,23 @@ const CurrentFilters = props => {
     rows
   };
   return (
-    <MDBContainer id="current-filters">
+    <div id="current-filters" className='module'>
       <h2>Current Filters</h2>
+      <NewFilterButton />
       <MDBDataTable
         striped
         bordered
         hover
+        btn
+        autoWidth
+        sortable={false}
+        searching={false}
         noBottomColumns={true}
         displayEntries={ false }
         info={ false }
         data={ data }
       />
-    </MDBContainer>
+    </div>
   );
 };
 
