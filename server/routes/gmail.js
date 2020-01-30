@@ -4,39 +4,9 @@ const auth = require('../middleware/auth');
 const emails = require('../data/emails');
 // --------------------------------------------------------------------------------------------------
 
-
-// /**
-//  * Get labels for active user
-//  */
-// router.get('/labels', auth, (req, res) => {
-//   let {gmail} = req;
-//   gapi.getLabels(gmail)
-//     .then(result => {
-//       res.send(result);
-//     })
-//     .catch(error => {
-//       console.error(`FILE: gmail.js | ERROR: \n`, error);
-//       res.sendStatus(500);
-//     });
-// });
-//
-//
-// /**
-//  * Get filters for active user
-//  */
-// router.get('/filters', auth, (req, res) => {
-//   let { gmail } = req;
-//   gapi.getFilters(gmail)
-//     .then(result => {
-//       res.send(result);
-//     })
-//     .catch(error => {
-//       console.error(`FILE: gmail.js | ERROR: \n`, error);
-//       res.sendStatus(500);
-//     });
-// });
-
-
+/**
+ * Get labels & filters
+ */
 router.get('/labels-filters', auth, (req, res) => {
   let {gmail} = req;
   let result = {};
@@ -88,6 +58,29 @@ router.delete('/filter', auth, (req, res) => {
     .catch(() => {
     	res.sendStatus(500);
     });
+});
+
+
+
+router.post('/filter', auth, (req, res) => {
+//    return gapi.client.gmail.users.settings.filters.create({
+//       "resource": {
+//         "criteria": {
+//           "from": "",
+//           "to": "as"
+//         },
+//         "action": {
+//           "addLabelIds": [
+//             "1",
+//             "2"
+//           ],
+//           "removeLabelIds": [
+//             "1",
+//             "2"
+//           ]
+//         }
+//       }
+//     })
 });
 
 

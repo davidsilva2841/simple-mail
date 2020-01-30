@@ -8,17 +8,18 @@ import {
   MDBModalFooter,
   MDBRow,
 } from 'mdbreact';
-import NewFilterColumn from "./newFilterColumn";
+import FilterColumn from "./filterColumn";
+import {connect} from "react-redux";
 
-class NewFilterModal extends Component {
+class Modal extends Component {
   constructor (props) {
     super(props);
     this.state = {
       filters: [
-        { index: 0, title: 'Sent to', values: [], value: '' },
-        { index: 1, title: 'From', values: [], value: '' },
-        { index: 2, title: 'Add Label', values: [], value: '' },
-        { index: 3, title: 'Remove Label', values: [], value: '' }
+        { index: 0, title: 'Sent to', name: 'to', values: [], value: '', type: 'address' },
+        { index: 1, title: 'From', name: 'from', values: [], value: '', type: 'address' },
+        { index: 2, title: 'Add Label', name: '', values: [], value: '', type: 'label' },
+        { index: 3, title: 'Remove Label',name: '', values: [], value: '', type: 'label' }
       ]
     };
     
@@ -26,14 +27,13 @@ class NewFilterModal extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   
-  
+  // --------------------------------------------------------------------------------------------------
   handleChange (e, index, value) {
     e.preventDefault();
     const {filters} = this.state;
     filters[index].value = value;
     this.setState({filters});
   }
-  
   
   handleSubmit (e, index, value) {
     e.preventDefault();
@@ -45,30 +45,29 @@ class NewFilterModal extends Component {
     }
   }
   
+  // --------------------------------------------------------------------------------------------------
   
   
   render () {
     const { filters } = this.state;
+    
+    
     return (
       <MDBContainer id="new-filter-modal">
-        <MDBModal size="lg" isOpen={ this.props.modal } toggle={ () => this.props.toggle() }>
+        <MDBModal size="fluid" isOpen={ this.props.modal } toggle={ () => this.props.toggle() }>
           <MDBModalHeader toggle={ () => this.props.toggle() }>New Filter</MDBModalHeader>
           <MDBModalBody>
-            <MDBContainer>
-              <MDBRow start>
-
-                
+            
+            <MDBContainer fluid>
+              <MDBRow>
                 { filters.map((filter, key) =>
-                  <NewFilterColumn
+                  <FilterColumn
                     filter={ filter }
                     onSubmit={this.handleSubmit}
                     onChange={this.handleChange}
                     key={key}
                   />)
                 }
-                
-
-              
               </MDBRow>
             
             </MDBContainer>
@@ -85,4 +84,7 @@ class NewFilterModal extends Component {
   }
 }
 
-export default NewFilterModal;
+
+
+export default Modal;
+

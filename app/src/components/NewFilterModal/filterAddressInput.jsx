@@ -2,7 +2,7 @@ import React from 'react';
 import { MDBInput, MDBCol, MDBBtn, MDBIcon } from "mdbreact";
 
 
-const NewFilterInput = props => {
+const FilterAddressInput = props => {
   const {index, value, onSubmit, onChange} = props;
   return (
     <React.Fragment>
@@ -11,8 +11,6 @@ const NewFilterInput = props => {
           <MDBInput
             onChange={ e => onChange(e, index, e.target.value) }
             value={value}
-            name={ 'name' }
-            type={ "text" }
             size="sm"
             outline
           />
@@ -31,4 +29,4 @@ const NewFilterInput = props => {
   );
 };
 
-export default NewFilterInput;
+export default FilterAddressInput;

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { MDBBtn, MDBIcon } from "mdbreact";
-import NewFilterModal from "./newFilterModal";
+import Modal from "./modal";
 
-class NewFilterButton extends Component {
+class ToggleModalButton extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -26,7 +26,7 @@ class NewFilterButton extends Component {
           New Filter
         </MDBBtn>
         
-        <NewFilterModal
+        <Modal
           modal={this.state.show}
           toggle={this.toggle}
         />
@@ -36,7 +36,7 @@ class NewFilterButton extends Component {
   }
 }
 
-export default NewFilterButton;
+export default ToggleModalButton;
 
 
 

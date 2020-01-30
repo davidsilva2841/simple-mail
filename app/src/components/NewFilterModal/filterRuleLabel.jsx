@@ -2,12 +2,12 @@ import React from 'react';
 import { MDBInput, MDBCol, MDBBtn, MDBIcon } from "mdbreact";
 
 
-const NewFilterLabel = props => {
+const FilterRuleLabel = props => {
   return (
-    <div>
+    <MDBCol>
       {props.value}
-    </div>
+    </MDBCol>
   );
 };
 
-export default NewFilterLabel;
+export default FilterRuleLabel;

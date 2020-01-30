@@ -8,7 +8,7 @@ import FilterLabelButton from "./filterLabelButton";
 import FilterAddressButton from "./filterAddressButton";
 import FilterEditButton from "./filterEditButton";
 import FilterDeleteButton from "./filterDeleteButton";
-import NewFilterButton from "./NewFilterModal/newFilterButton";
+import ToggleModalButton from "./NewFilterModal/toggleModalButton";
 
 // --------------------------------------------------------------------------------------------------
 
@@ -113,7 +113,7 @@ const CurrentFilters = props => {
   return (
     <div id="current-filters" className='module'>
       <h2>Current Filters</h2>
-      <NewFilterButton />
+      <ToggleModalButton />
       <MDBDataTable
         striped
         bordered

@@ -181,6 +181,16 @@ router.delete('/gmail/filter', (req, res) => {
     });
 });
 
+
+router.post('/gmail/filter', (req, res) => {
+  console.log('h2');
+  res.sendStatus(200);
+  
+});
+
+
+
+
 // --------------------------------------------------------------------------------------------------
 // Dummy data
 
