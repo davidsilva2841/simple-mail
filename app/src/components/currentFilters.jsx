@@ -1,9 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   MDBDataTable,
-  MDBContainer,
-  MDBBtn,
-  MDBIcon,
 } from "mdbreact";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -11,7 +8,9 @@ import FilterLabelButton from "./filterLabelButton";
 import FilterAddressButton from "./filterAddressButton";
 import FilterEditButton from "./filterEditButton";
 import FilterDeleteButton from "./filterDeleteButton";
-import NewFilterButton from "../components/newFilterButton";
+import NewFilterButton from "./NewFilterModal/newFilterButton";
+
+// --------------------------------------------------------------------------------------------------
 
 const columns = [
   {
@@ -56,12 +55,12 @@ const buildRows = filters => {
     
     
     row.editFilter = <FilterEditButton filter={filter}/>;
-    row.deleteFilter = <FilterDeleteButton filter={filter}/>;
+    row.deleteFilter = <FilterDeleteButton filterId={filter.id}/>;
     
     row.sentToAddress = filter.sentToAddress.map((sentTo, key) =>
       <FilterAddressButton
         type='sentToAddress'
-        id={filter.id}
+        filterId={filter.id}
         data={sentTo}
         display={sentTo}
         key={key}
@@ -71,7 +70,7 @@ const buildRows = filters => {
 		row.fromAddress = filter.fromAddress.map((fromAddress, key) =>
       <FilterAddressButton
         type='fromAddress'
-        id={filter.id}
+        filterId={filter.id}
         data={fromAddress}
         display={fromAddress}
         key={key}
@@ -81,7 +80,7 @@ const buildRows = filters => {
 		row.addLabels = filter.addLabels.map((addLabel, key) =>
       <FilterLabelButton
         type='addLabel'
-        id={filter.id}
+        filterId={filter.id}
         data={addLabel}
         display={addLabel.name}
         key={key}
@@ -91,7 +90,7 @@ const buildRows = filters => {
 		row.removeLabels = filter.removeLabels.map((removeLabel, key) =>
       <FilterLabelButton
         type='removeLabel'
-        id={filter.id}
+        filterId={filter.id}
         data={removeLabel}
         display={removeLabel.name}
         key={key}
@@ -100,7 +99,6 @@ const buildRows = filters => {
 		
 		rows.push(row);
 	}
-  console.log(rows);
   return rows;
 };
 

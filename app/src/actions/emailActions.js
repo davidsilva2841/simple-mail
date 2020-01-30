@@ -4,48 +4,13 @@ import simpleMail from "../api/simpleMail";
 // --------------------------------------------------------------------------------------------------
 
 /**
- * Get labels under users email
+ * Get labels and filters
  * @returns {function(...[*]=)}
  */
-export const getLabels = () => {
-  return async (dispatch, getState) => {
-    simpleMail.get('/testing/gmail/labels0')
-      .then(result => {
-        console.log(`FILE: emailActions.js getLabels()| result: \n`, result);
-        dispatch({
-          type: types.GET_LABELS,
-          payload: result.data
-        })
-      })
-      .catch(error => {
-        console.error(`FILE: emailActions.js getLabels()| ERROR: \n`, error);
-      });
-  }
-};
-
-
-/**
- * Get filters under users emails
- * @returns {function(...[*]=)}
- */
-export const getFilters = () => {
-  return async (dispatch, getState) => {
-    simpleMail.get('/testing/gmail/filters0')
-      .then(result => {
-        dispatch({
-          type: types.GET_FILTERS,
-          payload: result.data
-        })
-      })
-      .catch(error => {
-        console.error(`FILE: emailActions.js getFilters()| ERROR: \n`, error);
-      });
-  }
-};
-
 export const getLabelsFilters = () => {
   return async (dispatch, getState) => {
     simpleMail.get('/testing/gmail/labels-filters0')
+    // simpleMail.get('/gmail/labels-filters')
       .then(result => {
         dispatch({
           type: types.GET_LABELS_FILTERS,
@@ -59,13 +24,15 @@ export const getLabelsFilters = () => {
 };
 
 
-
-
+/**
+ * Get emails
+ * @returns {function(...[*]=)}
+ */
 export const getEmails = () => {
   return async (dispatch, getState) => {
     simpleMail.get('/testing/gmail/emails0')
+    // simpleMail.get('/gmail/email')
       .then(result => {
-        console.log(`FILE: emailActions.js getEmails()| result: \n`, result);
         dispatch({
           type: types.GET_EMAILS,
           payload: result.data
@@ -76,4 +43,18 @@ export const getEmails = () => {
       });
   }
 };
+
+
+export const deleteFilter = filterId => {
+  return async (dispatch, getState) => {
+    simpleMail.delete('/gmail/filter', { params: { filterId } })
+      .then(result => {
+        console.log(`FILE: emailActions.js | result: \n`, result);
+      })
+      .catch(error => {
+        console.error(`FILE: emailActions.js | ERROR: \n`, error);
+      });
+  }
+};
+
 

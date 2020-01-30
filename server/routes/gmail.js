@@ -1,80 +1,94 @@
 const router = require('express').Router();
-const users = require('../db/users');
 const gapi = require('../services/gmail.js');
+const auth = require('../middleware/auth');
 const emails = require('../data/emails');
-
 // --------------------------------------------------------------------------------------------------
 
 
-/**
- * Get labels for active user
- */
-router.get('/gmail/labels', (req, res) => {
-  users.getUser(req.signedCookies.cookie.user)
-    .then(rows => {
-      let { access_token: accessToken, refresh_token: refreshToken } = rows[ 0 ];
-      let token = gapi.getToken(accessToken, refreshToken);
-      let gmail = gapi.getGmail(token);
-      return gapi.getLabels(gmail);
-    })
-    .then(result => {
-      res.send(result);
-    })
-    .catch(error => {
-      console.error(`FILE: gmail.js GET /gmail/labels | ERROR: \n`, error);
-      res.sendStatus(500);
-    });
-  
-});
+// /**
+//  * Get labels for active user
+//  */
+// router.get('/labels', auth, (req, res) => {
+//   let {gmail} = req;
+//   gapi.getLabels(gmail)
+//     .then(result => {
+//       res.send(result);
+//     })
+//     .catch(error => {
+//       console.error(`FILE: gmail.js | ERROR: \n`, error);
+//       res.sendStatus(500);
+//     });
+// });
+//
+//
+// /**
+//  * Get filters for active user
+//  */
+// router.get('/filters', auth, (req, res) => {
+//   let { gmail } = req;
+//   gapi.getFilters(gmail)
+//     .then(result => {
+//       res.send(result);
+//     })
+//     .catch(error => {
+//       console.error(`FILE: gmail.js | ERROR: \n`, error);
+//       res.sendStatus(500);
+//     });
+// });
 
 
-/**
- * Get filters for active user
- */
-router.get('/gmail/filters', (req, res) => {
-  users.getUser(req.signedCookies.cookie.user)
-    .then(rows => {
-      let { access_token: accessToken, refresh_token: refreshToken } = rows[ 0 ];
-      let token = gapi.getToken(accessToken, refreshToken);
-      let gmail = gapi.getGmail(token);
+router.get('/labels-filters', auth, (req, res) => {
+  let {gmail} = req;
+  let result = {};
+  gapi.getLabels(gmail)
+    .then(labels => {
+      console.log(labels);
+      result['labels'] = emails.cleanLabels(labels);
       return gapi.getFilters(gmail);
     })
-    .then(result => {
+    .then(filters => {
+      result['filters'] = emails.cleanFilters(filters, result.labels);
       res.send(result);
     })
     .catch(error => {
-      console.error(`FILE: gmail.js GET /gmail/filters| ERROR: \n`, error);
+      console.error(`FILE: gmail.js () | ERROR: \n`, error);
       res.sendStatus(500);
-    });
+    })
 });
-
 
 // TODO: Add a loop to fetch ALL mail
 /**
  * Get all mail for active user
  */
-router.get('/gmail/mail', (req, res) => {
-  users.getUser(req.signedCookies.cookie.user)
-    .then(rows => {
-      let { access_token: accessToken, refresh_token: refreshToken } = rows[ 0 ];
-      let token = gapi.getToken(accessToken, refreshToken);
-      let gmail = gapi.getGmail(token);
-      return gapi.getAllInfo(gmail);
-    })
+router.get('/mail', auth, (req, res) => {
+  let { gmail } = req;
+  gapi.getAllInfo(gmail)
     .then(result => {
       res.send(result);
-      let mail = emails.clean(result);
-      res.send(mail);
     })
     .catch(error => {
-      console.error(`FILE: gmail.js GET /gmail/mail | ERROR: \n`, error);
+      console.error(`FILE: gmail.js | ERROR: \n`, error);
       res.sendStatus(500);
     });
 });
 
 
-
-
+/**
+ * Delete a filter
+ */
+router.delete('/filter', auth, (req, res) => {
+  let { gmail } = req;
+  console.log(`FILE: gmail.js () | req.query.filterId: \n`, req.query.filterId);
+  gapi.deleteFilter(gmail, req.query.filterId)
+    .then(result => {
+      console.log(`FILE: gmail.js () | result:`, result);
+    	res.sendStatus(200);
+      
+    })
+    .catch(() => {
+    	res.sendStatus(500);
+    });
+});
 
 
 module.exports = router;

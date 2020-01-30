@@ -91,6 +91,11 @@ const sortLabels = labels => {
 };
 
 
+/**
+ * Clean labels
+ * @param labels
+ * @returns {*[]}
+ */
 const cleanLabels = labels => {
   let cleanedLabels = [];
   for(let label of labels) {
@@ -106,6 +111,13 @@ const cleanLabels = labels => {
   return _.sortBy(cleanedLabels, 'name');
 };
 
+
+/**
+ * Clean filters
+ * @param filters
+ * @param labels
+ * @returns {[]}
+ */
 const cleanFilters = (filters, labels) => {
   let cleanedFilters = [];
   
@@ -128,15 +140,22 @@ const cleanFilters = (filters, labels) => {
     let newFilter = {
       id: filter.id
     };
-    newFilter.addLabels = filter.action.addLabelIds ? getActions(filter.action.addLabelIds) : [];
-    newFilter.removeLabels = filter.action.removeLabelIds ?  getActions(filter.action.removeLabelIds) : [];
-    newFilter.sentToAddress = filter.criteria.to ? filter.criteria.to.split(',')  : [];
-    newFilter.fromAddress = filter.criteria['from'] ? filter.criteria['from'].split(',')  : [];
+    if (filter.action) {
+      newFilter.addLabels = filter.action.addLabelIds ? getActions(filter.action.addLabelIds) : [];
+      newFilter.removeLabels = filter.action.removeLabelIds ?  getActions(filter.action.removeLabelIds) : [];
+    }
+    if (filter.criteria) {
+      newFilter.sentToAddress = filter.criteria.to ? filter.criteria.to.split(',')  : [];
+      newFilter.fromAddress = filter.criteria['from'] ? filter.criteria['from'].split(',')  : [];
+    }
+
     
     cleanedFilters.push(newFilter);
   }
   return cleanedFilters;
 };
+
+
 
 module.exports = {
   clean,

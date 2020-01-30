@@ -1,5 +1,6 @@
 const { google } = require('googleapis');
 const config = require('config');
+const emails = require('../data/emails');
 
 // --------------------------------------------------------------------------------------------------
 
@@ -137,7 +138,25 @@ const getAllInfo = gmail => {
         promises.push(getInfo(gmail, message.id));
       }
       return Promise.all(promises);
-    });
+    })
+    .then(data => {
+      return emails.clean(data);
+    })
+};
+
+
+/**
+ * Create a label
+ * @param gmail
+ * @param label
+ * @returns {*}
+ */
+const createLabel = (gmail, label) => {
+  console.log(`FILE: gmail.js createLabel() | : \n`, );
+  return gmail.users.labels.create({
+    userId: 'me',
+    resource: label
+  })
 };
 
 
@@ -148,25 +167,28 @@ const getAllInfo = gmail => {
  * @returns {*}
  */
 const createFilter = (gmail, filter) => {
-	return gmail.users.settings.filters.create({
+  return gmail.users.settings.filters.create({
     userId: 'me',
     resource: filter
   })
 };
 
 
-const createLabel = (gmail, label) => {
-  console.log(`FILE: gmail.js createLabel() | : \n`, );
-  return gmail.users.labels.create({
+/**
+ * Delete a filter
+ * @param gmail
+ * @param filterId
+ */
+const deleteFilter = (gmail, filterId) => {
+  return gmail.users.settings.filters.delete({
     userId: 'me',
-    resource: label
+    id: filterId
   })
 };
 
 
-
-
 module.exports = {
+  deleteFilter,
   createLabel,
   createFilter,
   getGmail,

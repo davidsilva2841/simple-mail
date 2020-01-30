@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { MDBBtn, MDBContainer, MDBIcon, MDBPopover, MDBPopoverBody, MDBPopoverHeader } from "mdbreact";
+import { MDBBtn, MDBIcon } from "mdbreact";
 import NewFilterModal from "./newFilterModal";
 
 class NewFilterButton extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      show: false
+      show: true
     };
   }
   
@@ -18,8 +18,7 @@ class NewFilterButton extends Component {
     return(
       <React.Fragment>
         <MDBBtn
-          color="elegant"
-          size="sm"
+          color="default"
           onClick={() => this.toggle()}
           style={{marginLeft: 0}}
         >

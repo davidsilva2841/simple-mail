@@ -137,7 +137,8 @@ router.get('/gmail/filters/add', (req, res) => {
     }
   };
   gapi.createFilter(gmail, filter)
-    .then(() => {
+    .then(result => {
+      console.log(`FILE: testing.js () | result: \n`, result);
       res.sendStatus(200);
     })
     .catch(error => {
@@ -159,6 +160,23 @@ router.get('/gmail/labels/add', (req, res) => {
     })
     .catch(error => {
       console.error(`FILE: testing.js | ERROR: \n`, error);
+      res.sendStatus(500);
+    });
+});
+
+
+/**
+ * Delete a filter
+ */
+router.delete('/gmail/filter', (req, res) => {
+  let token = gapi.getToken(config.get('testUser.accessToken'), config.get('testUser.refreshToken'));
+  let gmail = gapi.getGmail(token);
+  gapi.deleteFilter(gmail, req.query.filterId)
+    .then(() => {
+    	res.sendStatus(200);
+    })
+    .catch(error => {
+      console.log(`FILE: testing.js DELETE /gmail/filter error:`, error);
       res.sendStatus(500);
     });
 });
@@ -191,11 +209,15 @@ router.get('/gmail/labels0', (req, res) => {
 	res.send(labels);
 });
 
+
+/**
+ * Get labels & filters
+ */
 router.get('/gmail/labels-filters0', (req, res) => {
  
 	let result = {
 	  labels: emails.cleanLabels(dummyLabels),
-    filters: emails.cleanFilters(dummyFilters, dummyLabels)
+    filters: emails.cleanFilters(dummyFilters, emails.cleanLabels(dummyLabels))
   };
   res.send(result);
 });
@@ -205,3 +227,6 @@ router.get('/gmail/labels-filters0', (req, res) => {
 // --------------------------------------------------------------------------------------------------
 
 module.exports = router;
+
+
+

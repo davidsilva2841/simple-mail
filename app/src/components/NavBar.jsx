@@ -10,7 +10,7 @@ import {
   MDBCollapse,
   MDBBtn
 } from "mdbreact";
-import { userLoggedIn, signOut, getFilters, getLabels, getEmails, getLabelsFilters } from "../actions";
+import { userLoggedIn, signOut, getEmails, getLabelsFilters } from "../actions";
 import { connect } from 'react-redux';
 // --------------------------------------------------------------------------------------------------
 
@@ -47,7 +47,7 @@ class NavBar extends Component {
   };
   
    componentDidMount () {
-     const { user, userLoggedIn, getFilters, getLabels, getEmails, getLabelsFilters } = this.props;
+     const { user, userLoggedIn, getEmails, getLabelsFilters } = this.props;
      let loggedIn = user.userLoggedIn;
      
      // Check if user logged in
@@ -56,9 +56,6 @@ class NavBar extends Component {
      // If user just logged in
      if (user.loggedIn !== loggedIn) {
        // Get data
-       console.log('CHANGE');
-       // getFilters();
-       // getLabels();
        getLabelsFilters();
        getEmails();
      }
@@ -108,10 +105,8 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {userLoggedIn, signOut, getLabels, getFilters, getEmails, getLabelsFilters}
+  {userLoggedIn, signOut, getEmails, getLabelsFilters}
 )
-(
-  NavBar
-);
+(NavBar);
 
 
