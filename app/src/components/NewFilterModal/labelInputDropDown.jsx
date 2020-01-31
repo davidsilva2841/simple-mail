@@ -8,22 +8,6 @@ let options1 =  [
   {
     text: "USA",
     value: "1"
-  },
-  {
-    text: "Germany",
-    value: "2"
-  },
-  {
-    text: "France",
-    value: "3"
-  },
-  {
-    text: "Poland",
-    value: "4"
-  },
-  {
-    text: "Japan",
-    value: "5"
   }
 ];
 
