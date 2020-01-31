@@ -5,4 +5,10 @@
     .icon-button {
         padding: 5px 25.6px;
     }
+    
+    .list-btn {
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }

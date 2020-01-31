@@ -1,10 +1,22 @@
 import React from 'react';
-import { MDBCol } from 'mdbreact';
+import { MDBCol, MDBListGroup } from 'mdbreact';
 import FilterAddressInput from "./filterAddressInput";
 import FilterRuleLabel from "./filterRuleLabel";
 import LabelInputDropDown from "./labelInputDropDown";
 
-const renderSelector = (type, index, value, onChange, onSubmit) => {
+// --------------------------------------------------------------------------------------------------
+
+/**
+ * Renders a drop down or input field
+ * @param type
+ * @param index
+ * @param value
+ * @param onChange
+ * @param onSubmit
+ * @param onDropDown
+ * @returns {*}
+ */
+const renderSelector = (type, index, value, onChange, onSubmit, onDropDown) => {
   if (type === 'address') {
     return (
       <FilterAddressInput
@@ -18,28 +30,42 @@ const renderSelector = (type, index, value, onChange, onSubmit) => {
     return (
       <LabelInputDropDown
         index={index}
-        value={value}
-        onChange={onChange}
-        onSubmit={onSubmit}
+        onDropDown={onDropDown}
       />
     );
   }
 };
 
 
+/**
+ * Filter column that holds entered filter params
+ * @param props
+ * @returns {*}
+ * @constructor
+ */
 const FilterColumn = props => {
   const {index, title, values, value, type} = props.filter;
-  const {onSubmit, onChange} = props;
+  const {onSubmit, onChange, onDropDown, onDeleteLabel} = props;
   return (
     <MDBCol >
       <MDBCol >
         <h5>{title}</h5>
       </MDBCol>
-      {values.map((value, key) => <FilterRuleLabel value={value} key={key}/>)}
-      {renderSelector(type, index, value, onChange, onSubmit)}
+      <MDBListGroup>
+        {values.map((value, key) =>
+          <FilterRuleLabel
+            index={index}
+            value={value}
+            key={key}
+            onDeleteLabel={onDeleteLabel}
+          />
+        )}
+      </MDBListGroup>
+      {renderSelector(type, index, value, onChange, onSubmit, onDropDown)}
       
     </MDBCol>
   );
 };
+
 
 export default FilterColumn;
