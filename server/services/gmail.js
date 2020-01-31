@@ -167,6 +167,7 @@ const createLabel = (gmail, label) => {
  * @returns {*}
  */
 const createFilter = (gmail, filter) => {
+  console.log(`FILE: gmail.js createFilter() | filter: \n`, filter);
   return gmail.users.settings.filters.create({
     userId: 'me',
     resource: filter

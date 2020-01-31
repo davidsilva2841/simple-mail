@@ -148,6 +148,9 @@ router.get('/gmail/filters/add', (req, res) => {
 });
 
 
+/**
+ * Add a label
+ */
 router.get('/gmail/labels/add', (req, res) => {
   let token = gapi.getToken(config.get('testUser.accessToken'), config.get('testUser.refreshToken'));
   let gmail = gapi.getGmail(token);
@@ -182,9 +185,21 @@ router.delete('/gmail/filter', (req, res) => {
 });
 
 
+
 router.post('/gmail/filter', (req, res) => {
-  console.log('h2');
-  res.sendStatus(200);
+  let token = gapi.getToken(config.get('testUser.accessToken'), config.get('testUser.refreshToken'));
+  let gmail = gapi.getGmail(token);
+  
+  gapi.createFilter(gmail, req.body)
+  .then(result => {
+  	console.log(`FILE: testing.js | result: \n`, result);
+  	res.sendStatus(200);
+  })
+  .catch(error => {
+  	console.error(`FILE: testing.js | ERROR: \n`, error);
+    res.sendStatus(500);
+  });
+  
   
 });
 

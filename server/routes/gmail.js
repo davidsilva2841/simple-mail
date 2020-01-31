@@ -63,24 +63,22 @@ router.delete('/filter', auth, (req, res) => {
 
 
 router.post('/filter', auth, (req, res) => {
-//    return gapi.client.gmail.users.settings.filters.create({
-//       "resource": {
-//         "criteria": {
-//           "from": "",
-//           "to": "as"
-//         },
-//         "action": {
-//           "addLabelIds": [
-//             "1",
-//             "2"
-//           ],
-//           "removeLabelIds": [
-//             "1",
-//             "2"
-//           ]
-//         }
-//       }
-//     })
+  let { gmail } = req;
+  gapi.createFilter(gmail, req.body)
+    .then(result => {
+      console.log(`FILE: gmail.js POST result: \n`, result);
+      res.sendStatus(200);
+    })
+    .catch(error => {
+      console.error(`FILE: gmail.js () | ERROR: \n`, error);
+      if (error.code === 400){
+        console.log('ers\n\n\n');
+        res.status(400).send(error.errors);
+      } else {
+        res.sendStatus(500);
+      }
+      
+    });
 });
 
 

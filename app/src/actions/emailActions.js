@@ -45,16 +45,5 @@ export const getEmails = () => {
 };
 
 
-export const deleteFilter = filterId => {
-  return async (dispatch, getState) => {
-    simpleMail.delete('/gmail/filter', { params: { filterId } })
-      .then(result => {
-        console.log(`FILE: emailActions.js | result: \n`, result);
-      })
-      .catch(error => {
-        console.error(`FILE: emailActions.js | ERROR: \n`, error);
-      });
-  }
-};
 
 

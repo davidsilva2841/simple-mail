@@ -8,7 +8,6 @@ import FilterLabelButton from "./filterLabelButton";
 import FilterAddressButton from "./filterAddressButton";
 import FilterEditButton from "./filterEditButton";
 import FilterDeleteButton from "./filterDeleteButton";
-import ToggleModalButton from "./NewFilterModal/toggleModalButton";
 import FiltersModal from "./FiltersModal/FiltersModal";
 // --------------------------------------------------------------------------------------------------
 

@@ -10,7 +10,7 @@ import {
   MDBRow,
 } from 'mdbreact';
 import FilterColumn from "./filterColumn";
-import {resetFilter} from "../../actions";
+import {resetFilter, createFilter} from "../../actions";
 
 
 class Modal extends Component {
@@ -20,7 +20,7 @@ class Modal extends Component {
   
   
   render () {
-    const { isOpen, filters } = this.props;
+    const { isOpen, filters, email } = this.props;
     return (
       <MDBContainer id="new-filter-modal">
         <MDBModal size="fluid" isOpen={ isOpen } toggle={() => this.props.toggle()}>
@@ -38,9 +38,9 @@ class Modal extends Component {
   
   
           <MDBModalFooter>
-            <MDBBtn color="danger" onClick={ () => this.props.toggle() } >Close</MDBBtn>
-            <MDBBtn color="danger" onClick={ () => this.props.resetFilter()} >Reset</MDBBtn>
-            <MDBBtn color="default" >Submit</MDBBtn>
+            <MDBBtn color="danger"  onClick={ () => this.props.toggle() } >Close</MDBBtn>
+            <MDBBtn color="danger"  onClick={ () => this.props.resetFilter()} >Reset</MDBBtn>
+            <MDBBtn color="default" onClick={ () => this.props.createFilter(filters.newFilters, email.labels)}>Submit</MDBBtn>
           </MDBModalFooter>
           
         </MDBModal>
@@ -51,8 +51,9 @@ class Modal extends Component {
 
 function mapStateToProps (state) {
   return {
-    filters: state.filters
+    filters: state.filters,
+    email: state.email
   };
 }
 
-export default connect(mapStateToProps, {resetFilter})(Modal);
+export default connect(mapStateToProps, {resetFilter, createFilter})(Modal);

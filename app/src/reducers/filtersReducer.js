@@ -5,8 +5,8 @@ const initialState = {
   newFilters: [
     { index: 0, title: 'Sent to', name: 'to', values: [], value: '', type: 'address' },
     { index: 1, title: 'From', name: 'from', values: [], value: '', type: 'address' },
-    { index: 2, title: 'Add Label', name: '', values: [], value: '', type: 'label' },
-    { index: 3, title: 'Remove Label', name: '', values: [], value: '', type: 'label' }
+    { index: 2, title: 'Add Label', name: 'addLabelIds', values: [], value: '', type: 'label' },
+    { index: 3, title: 'Remove Label', name: 'removeLabelIds', values: [], value: '', type: 'label' }
   ]
 };
 

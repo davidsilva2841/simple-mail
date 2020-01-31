@@ -17,8 +17,13 @@ class InputLabel extends Component {
   }
   
   getOptions () {
-    const {labels} = this.props.email;
+    let {labels} = this.props.email;
     const {newFilters} = this.props.filters;
+    
+    // User can only remove labels for system filters
+    if (newFilters[this.props.index].name === 'removeLabelIds') {
+      labels = labels.filter(label => label.type === 'system')
+    }
     
     let options = [];
     for (let i = 0 ; i < labels.length ; i++) {
