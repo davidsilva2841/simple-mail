@@ -10,6 +10,7 @@ import {
   MDBRow,
 } from 'mdbreact';
 import FilterColumn from "./filterColumn";
+import FilterMessage from "./filterMessage";
 import {resetFilter, createFilter} from "../../actions";
 
 
@@ -22,7 +23,7 @@ class Modal extends Component {
   render () {
     const { isOpen, filters, email } = this.props;
     return (
-      <MDBContainer id="new-filter-modal">
+      <MDBContainer id="filters-modal">
         <MDBModal size="fluid" isOpen={ isOpen } toggle={() => this.props.toggle()}>
           <MDBModalHeader>New Filter</MDBModalHeader>
           
@@ -38,11 +39,12 @@ class Modal extends Component {
   
   
           <MDBModalFooter>
-            <MDBBtn color="danger"  onClick={ () => this.props.toggle() } >Close</MDBBtn>
-            <MDBBtn color="danger"  onClick={ () => this.props.resetFilter()} >Reset</MDBBtn>
-            <MDBBtn color="default" onClick={ () => this.props.createFilter(filters.newFilters, email.labels)}>Submit</MDBBtn>
+            <MDBBtn rounded color="danger"  onClick={ () => this.props.toggle() } >Close</MDBBtn>
+            <MDBBtn rounded color="danger"  onClick={ () => this.props.resetFilter()} >Reset</MDBBtn>
+            <MDBBtn rounded color="default" onClick={ () => this.props.createFilter(filters.newFilters, email.labels)}>Submit</MDBBtn>
           </MDBModalFooter>
-          
+          {/*{filters.message ? <div className={filters.error ? 'filter-message error' : 'filter-message success'}>{filters.message}</div> : null}*/}
+          <FilterMessage status={filters.status}/>
         </MDBModal>
       </MDBContainer>
     );

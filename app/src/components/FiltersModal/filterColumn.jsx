@@ -1,9 +1,28 @@
 import React from 'react';
 import { MDBCol } from "mdbreact";
 import InputAddress from "./inputAddress";
-import InputLabel from "./inputLabel";
+import InputRemoveLabel from "./inputRemoveLabel";
+import InputAddLabel from "./inputAddLabel";
 import { useSelector } from 'react-redux';
 import FilterConditionLabel from "./conditionLabel";
+
+
+const renderInput = (filter) => {
+  if ( filter.type === 'address' ) {
+    return (
+      <InputAddress index={ filter.index }/>
+    )
+  } else if ( filter.type === 'addLabel' ) {
+    return (
+      <InputAddLabel index={ filter.index }/>
+    );
+  } else if ( filter.type === 'removeLabel' ) {
+    return (
+      <InputRemoveLabel index={ filter.index }/>
+    )
+  }
+};
+
 
 const FilterColumn = props => {
   const { index } = props;
@@ -13,8 +32,8 @@ const FilterColumn = props => {
     <MDBCol>
       <MDBCol><h5>{ filter.title }</h5></MDBCol>
       
-      { filter.values.map((value, key) => <FilterConditionLabel index={index} value={ value } key={ key }/>) }
-      { (filter.type === 'label') ? <InputLabel index={ filter.index }/> : <InputAddress index={ filter.index }/> }
+      { filter.values.map((value, key) => <FilterConditionLabel index={ index } value={ value } key={ key }/>) }
+      { renderInput(filter) }
     </MDBCol>
   );
 };

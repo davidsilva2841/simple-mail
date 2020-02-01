@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { MDBSelect, MDBCol } from "mdbreact";
+import { MDBSelect, MDBCol, MDBDropdown, MDBDropdownItem, MDBDropdownMenu, MDBDropdownToggle } from "mdbreact";
 import {addFilterCondition} from "../../actions";
 
 
-class InputLabel extends Component {
+class InputAddLabel extends Component {
   constructor (props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -12,42 +12,42 @@ class InputLabel extends Component {
   }
   
   handleChange (value) {
-    if (value === '') return;
-    this.props.addFilterCondition(this.props.index, value)
+    if ( value === '' ) return;
+    this.props.addFilterCondition(this.props.index, value, true)
   }
   
   getOptions () {
-    let {labels} = this.props.email;
-    const {newFilters} = this.props.filters;
+    let { labels } = this.props.email;
+    const { newFilters } = this.props.filters;
     
     // User can only remove labels for system filters
-    if (newFilters[this.props.index].name === 'removeLabelIds') {
+    if ( newFilters[ this.props.index ].name === 'removeLabelIds' ) {
       labels = labels.filter(label => label.type === 'system')
     }
     
     let options = [];
     for (let i = 0 ; i < labels.length ; i++) {
-      if (newFilters[this.props.index].values.indexOf(labels[i].name) === -1) {
+      if ( newFilters[ this.props.index ].values.indexOf(labels[ i ].name) === -1 ) {
         options.push({
           value: i.toString(),
-          text: labels[i].name,
+          text: labels[ i ].name,
         })
       }
     }
-  
+    
     return options;
   }
   
   render () {
     let options = this.getOptions();
     return (
-      <MDBCol>
+      <MDBCol className="input-filter">
         <MDBSelect
           search
           className="mb-3 mt-0"
-          id={`LabelInputDropDown-${this.props.index}`}
-          options={options}
-          getTextContent={(value) => this.handleChange(value)}
+          id={ `LabelInputDropDown-${ this.props.index }` }
+          options={ options }
+          getTextContent={ (value) => this.handleChange(value) }
         />
       </MDBCol>
     );
@@ -64,5 +64,5 @@ function mapStateToProps (state) {
 
 export default connect(
   mapStateToProps, {addFilterCondition}
-)(InputLabel);
+)(InputAddLabel);
 

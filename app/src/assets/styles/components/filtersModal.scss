@@ -1,0 +1,26 @@
+#filters-modal {
+    @media (min-width: 1200px) {
+        .modal-fluid {
+            width: 1200px;
+        }
+    }
+    
+    
+    .modal-body {
+        padding: 2px 0;
+    }
+    .modal-footer {
+        padding: 4px;
+    }
+    
+    .col {
+        
+        text-align: center;
+    }
+    
+    .input-filter {
+        margin-top: 30px !important;
+        width: 100%;
+    }
+    
+}

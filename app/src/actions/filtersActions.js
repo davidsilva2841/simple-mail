@@ -6,13 +6,14 @@ import simpleMail from "../api/simpleMail";
  * Adds a new filter condition
  * @param index
  * @param value
+ * @param oneAllowed {boolean} - If only one item is allowed to be selected at once
  * @returns {{payload : {index : *, value : *}, type : string}}
  */
-export const addFilterCondition = (index, value) => {
+export const addFilterCondition = (index, value, oneAllowed = false) => {
   return {
     type: types.ADD_FILTER_CONDITION,
     payload: {
-      index, value
+      index, value, oneAllowed
     }
   };
 };
@@ -39,12 +40,10 @@ export const removeFilterCondition = (index, value) => {
  * @returns {{type : string}}
  */
 export const resetFilter = () => {
-   return {
-     type: types.RESET_FILTER
-   }
+  return {
+    type: types.RESET_FILTER
+  }
 };
-
-
 
 
 const getPostBody = (newFilters, labels) => {
@@ -55,17 +54,17 @@ const getPostBody = (newFilters, labels) => {
   };
   
   const getCriteria = (array) => {
-    return (array.length) ? `(${array.join(',')})` : '';
+    return (array.length) ? `(${ array.join(',') })` : '';
   };
   
-	return {
-	  criteria: {
-	    to: getCriteria(newFilters[0].values),
-      'from': getCriteria(newFilters[1].values),
+  return {
+    criteria: {
+      to: getCriteria(newFilters[ 0 ].values),
+      'from': getCriteria(newFilters[ 1 ].values),
     },
     action: {
-	    addLabelIds: getLabelIds(newFilters[2].values, labels),
-      removeLabelIds: getLabelIds(newFilters[3].values, labels)
+      addLabelIds: getLabelIds(newFilters[ 2 ].values, labels),
+      removeLabelIds: getLabelIds(newFilters[ 3 ].values, labels)
     }
   };
   
@@ -78,17 +77,22 @@ export const createFilter = (newFilters, labels) => {
     let postBody = getPostBody(newFilters, labels);
     console.log(`FILE: filtersActions.js () | postBody: \n`, postBody);
     simpleMail.post('/gmail/filter', postBody)
-    .then(result => {
-    	console.log(`FILE: filtersActions.js | result: \n`, result);
-      return dispatch({
-        type: types.CREATE_FILTER
+      .then(result => {
+        console.log(`FILE: filtersActions.js | result: \n`, result);
+        return dispatch({
+          type: types.CREATE_FILTER,
+          payload: { error: false, message: 'Success' }
+        })
       })
-    })
-    .catch(error => {
-    	console.error(`FILE: filtersActions.js | ERROR: \n`, error);
-    	console.error(`FILE: filtersActions.js | ERROR: \n`, error.response);
-    });
-
+      .catch(error => {
+        console.error(`FILE: filtersActions.js | ERROR: \n`, error);
+        console.error(`FILE: filtersActions.js | ERROR: \n`, error.response);
+        return dispatch({
+          type: types.CREATE_FILTER,
+          payload: { error: true, message: error.response.data[0].message }
+        })
+      });
+    
   }
 };
 

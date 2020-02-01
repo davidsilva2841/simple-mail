@@ -23,7 +23,7 @@ class FiltersModal extends Component {
       <React.Fragment>
         <MDBBtn color="default" onClick={() => this.toggle()} style={{marginLeft: 0}}>
           <MDBIcon icon="edit" />
-          Filter
+          New Filter
         </MDBBtn>
         <Modal
           isOpen={isOpen}

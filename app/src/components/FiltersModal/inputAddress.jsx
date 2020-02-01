@@ -21,13 +21,16 @@ class InputAddress extends Component {
   
   handleSubmit (event) {
     event.preventDefault();
-    this.props.addFilterCondition(this.props.index, this.state.value);
+    const {value} = this.state;
+    if (value === '') return;
+    
+    this.props.addFilterCondition(this.props.index, this.state.value.trim());
     this.setState({value: ''});
   }
   
   render () {
     return (
-      <MDBCol>
+      <MDBCol className="input-filter">
         <form onSubmit={event => this.handleSubmit(event)}>
           <MDBInputGroup
             onChange={event => this.handleChange(event.target.value)}
