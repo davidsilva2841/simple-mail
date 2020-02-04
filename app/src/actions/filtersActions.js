@@ -1,5 +1,21 @@
 import * as types from '../constants/ActionTypes';
 import simpleMail from "../api/simpleMail";
+const status = require('../constants/StatusTypes');
+
+
+// --------------------------------------------------------------------------------------------------
+
+/**
+ * Toggle display of the filter modal
+ * @param originalFilterId {string} - If editing existing filter, include this id
+ * @returns {{payload : boolean, type : string}}
+ */
+export const toggleFilterModal = (originalFilterId = '') => {
+  return {
+    type: types.TOGGLE_FILTER_MODAL,
+    payload: originalFilterId
+  }
+};
 
 
 /**
@@ -46,6 +62,36 @@ export const resetFilter = () => {
 };
 
 
+/**
+ * Delete a filter
+ * @param filterId
+ * @returns {function(...[*]=)}
+ */
+export const deleteFilter = filterId => {
+  return async (dispatch, getState) => {
+    dispatch(updateStatus('Deleting filter', status.inProgress, true));
+    simpleMail.delete('/gmail/filter', { params: { filterId } })
+      .then(result => {
+        dispatch(updateStatus('Deleted filter', status.complete, false));
+        console.log(`FILE: emailActions.js | result: \n`, result);
+      })
+      .catch(error => {
+        dispatch(updateStatus('Error deleting filter', status.error, false));
+        console.error(`FILE: emailActions.js | ERROR: \n`, error);
+      });
+  }
+};
+
+
+// --------------------------------------------------------------------------------------------------
+// Creating a filter
+
+/**
+ * Gets post body for creating a new filter
+ * @param newFilters
+ * @param labels
+ * @returns {{criteria : {from : string, to : string}, action : {addLabelIds : *, removeLabelIds : *}}}
+ */
 const getPostBody = (newFilters, labels) => {
   const getLabelIds = (array, labels) => {
     return labels
@@ -71,42 +117,66 @@ const getPostBody = (newFilters, labels) => {
 };
 
 
-export const createFilter = (newFilters, labels) => {
+/**
+ * Updates status of filter modal
+ * @param message
+ * @param type
+ * @param running {boolean}
+ * @returns {{payload : {message : string, type : *}, type : string}}
+ */
+export const updateStatus = (message = '', type, running) => {
+  return {
+    type: types.UPDATE_STATUS,
+    payload: {
+      running,
+      message,
+      type
+    }
+  }
+};
+
+
+/**
+ * Create a new filter
+ * @param newFilters {array}
+ * @param labels {array} - List of all labels
+ * @param originalFilterId {string}
+ * @returns {function(...[*]=)}
+ */
+export const createFilter = (newFilters, labels, originalFilterId) => {
   return async (dispatch, getState) => {
-    console.log(`FILE: filtersActions.js ()`);
-    let postBody = getPostBody(newFilters, labels);
-    console.log(`FILE: filtersActions.js () | postBody: \n`, postBody);
-    simpleMail.post('/gmail/filter', postBody)
-      .then(result => {
-        console.log(`FILE: filtersActions.js | result: \n`, result);
-        return dispatch({
-          type: types.CREATE_FILTER,
-          payload: { error: false, message: 'Success' }
-        })
+    let { filters } = getState();
+    if ( filters.status.running ) return;
+    
+    dispatch(updateStatus('Creating filter...', status.inProgress, true));
+    
+    simpleMail.post('/gmail/filter', getPostBody(newFilters, labels))
+      .then(() => {
+        dispatch(updateStatus('Created filter', status.complete, false));
+        if ( originalFilterId ) dispatch(deleteFilter(originalFilterId));
       })
       .catch(error => {
-        console.error(`FILE: filtersActions.js | ERROR: \n`, error);
-        console.error(`FILE: filtersActions.js | ERROR: \n`, error.response);
-        return dispatch({
-          type: types.CREATE_FILTER,
-          payload: { error: true, message: error.response.data[0].message }
-        })
+        let message = 'Error while creating filter';
+        try {
+          message = error.response.data[ 0 ].message;
+        } catch (err) {
+          console.error(`FILE: filtersActions.js () | err: \n`, err);
+          console.error(`FILE: filtersActions.js () | ERROR: \n`, error);
+        }
+        
+        dispatch(updateStatus(`Error while creating filter: ${ message }`, status.error, false))
       });
     
   }
 };
 
 
-export const deleteFilter = filterId => {
-  return async (dispatch, getState) => {
-    simpleMail.delete('/gmail/filter', { params: { filterId } })
-      .then(result => {
-        console.log(`FILE: emailActions.js | result: \n`, result);
-      })
-      .catch(error => {
-        console.error(`FILE: emailActions.js | ERROR: \n`, error);
-      });
-  }
-};
+// --------------------------------------------------------------------------------------------------
 
+export const populateFilter = filter => {
+  return {
+    type: types.POPULATE_FILTER,
+    payload: filter
+  };
+};
 

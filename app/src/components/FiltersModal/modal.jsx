@@ -12,7 +12,7 @@ import {
 import FilterColumn from "./filterColumn";
 import FilterMessage from "./filterMessage";
 import {resetFilter, createFilter} from "../../actions";
-
+import InputColumn from "./inputColumn";
 
 class Modal extends Component {
   constructor (props) {
@@ -23,9 +23,9 @@ class Modal extends Component {
   render () {
     const { isOpen, filters, email } = this.props;
     return (
-      <MDBContainer id="filters-modal">
+      <MDBContainer id="modal">
         <MDBModal size="fluid" isOpen={ isOpen } toggle={() => this.props.toggle()}>
-          <MDBModalHeader>New Filter</MDBModalHeader>
+          <MDBModalHeader>{filters.originalFilterId ? 'Edit Filter' : 'New Filter'}</MDBModalHeader>
           
           <MDBModalBody>
             <MDBContainer fluid>
@@ -34,17 +34,33 @@ class Modal extends Component {
                   <FilterColumn index={ index } key={ index }/>
                 ) }
               </MDBRow>
+              
+              <MDBRow id="inputs-row">
+                { filters.newFilters.map((filter, index) =>
+                  <InputColumn filter={ filter } key={ index }/>
+                ) }
+              </MDBRow>
             </MDBContainer>
+
           </MDBModalBody>
   
   
-          <MDBModalFooter>
+          <MDBModalFooter id="footer">
             <MDBBtn rounded color="danger"  onClick={ () => this.props.toggle() } >Close</MDBBtn>
             <MDBBtn rounded color="danger"  onClick={ () => this.props.resetFilter()} >Reset</MDBBtn>
-            <MDBBtn rounded color="default" onClick={ () => this.props.createFilter(filters.newFilters, email.labels)}>Submit</MDBBtn>
+            <MDBBtn rounded color="default"
+                    onClick={ () => {
+                      
+                      this.props.createFilter(filters.newFilters, email.labels, filters.originalFilterId);
+                      
+                    }
+            }>Submit</MDBBtn>
+            
+            
           </MDBModalFooter>
-          {/*{filters.message ? <div className={filters.error ? 'filter-message error' : 'filter-message success'}>{filters.message}</div> : null}*/}
+          
           <FilterMessage status={filters.status}/>
+          
         </MDBModal>
       </MDBContainer>
     );

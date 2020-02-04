@@ -1,39 +1,26 @@
-import React, { Component } from 'react';
-import { MDBBtn, MDBIcon } from "mdbreact";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { MDBBtn, MDBContainer, MDBIcon } from "mdbreact";
 import Modal from "./modal";
+import { toggleFilterModal } from "../../actions";
 
-
-class FiltersModal extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      isOpen: true
-    };
-    this.toggle = this.toggle.bind();
-  }
-
-  toggle = () => {
-    this.setState({ isOpen: !this.state.isOpen });
-  };
-  
-  render () {
-    const {isOpen} = this.state;
-    
-    return(
-      <React.Fragment>
-        <MDBBtn color="default" onClick={() => this.toggle()} style={{marginLeft: 0}}>
-          <MDBIcon icon="edit" />
-          New Filter
-        </MDBBtn>
-        <Modal
-          isOpen={isOpen}
-          toggle={this.toggle}
-        />
-
-        
-      </React.Fragment>
-    )
-  }
-}
+const FiltersModal = props => {
+  const dispatch = useDispatch();
+  const filters = useSelector(state => state.filters);
+  return (
+    <MDBContainer id="filters-modal">
+      <MDBBtn color="default" onClick={ () => dispatch(toggleFilterModal()) } style={ { marginLeft: 0 } }>
+        <MDBIcon icon="edit"/>
+        New Filter
+      </MDBBtn>
+      <Modal
+        isOpen={ filters.isOpen }
+        toggle={ () => dispatch(toggleFilterModal()) }
+      />
+    </MDBContainer>
+  );
+};
 
 export default FiltersModal;
+
+

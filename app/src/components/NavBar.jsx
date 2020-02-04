@@ -79,6 +79,7 @@ class NavBar extends Component {
               { navLink('Home', '/', <MDBIcon icon="home"/>) }
               { navLink('Mail', '/mail', <MDBIcon icon="envelope"/>) }
               { navLink('Sorting', '/sorting', <MDBIcon icon="random"/>) }
+              { navLink('Testing', '/testing', <MDBIcon icon="vials"/>) }
               { navLink('Settings', '/settings', <MDBIcon icon="cog"/>) }
   
               { user.loggedIn ? <MDBBtn color="danger" size="sm"

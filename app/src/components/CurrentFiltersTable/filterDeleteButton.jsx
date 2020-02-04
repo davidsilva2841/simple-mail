@@ -1,7 +1,7 @@
 import React from 'react';
 import { MDBBtn, MDBIcon, MDBPopover, MDBPopoverBody, MDBPopoverHeader } from "mdbreact";
-import { useSelector, useDispatch } from "react-redux";
-import { deleteFilter } from "../actions";
+import {  useDispatch } from "react-redux";
+import { deleteFilter } from "../../actions";
 
 const FilterDeleteButton = props => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const FilterDeleteButton = props => {
           <MDBBtn
             color='danger'
             size="sm"
-            // onClick={() => dispatch(deleteFilter(props.filterId))}
+            onClick={() => dispatch(deleteFilter(props.filterId))}
           >Delete</MDBBtn>
         </MDBPopoverBody>
       </div>

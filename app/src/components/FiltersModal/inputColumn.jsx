@@ -3,11 +3,9 @@ import { MDBCol, MDBListGroup, MDBRow } from "mdbreact";
 import InputAddress from "./inputAddress";
 import InputRemoveLabel from "./inputRemoveLabel";
 import InputAddLabel from "./inputAddLabel";
-import { useSelector } from 'react-redux';
-import FilterConditionLabel from "./conditionLabel";
 
 
-const renderInput = (filter) => {
+const renderInput = filter => {
   if ( filter.type === 'address' ) {
     return (
       <InputAddress index={ filter.index }/>
@@ -24,23 +22,12 @@ const renderInput = (filter) => {
 };
 
 
-const FilterColumn = props => {
-  const { index } = props;
-  const filters = useSelector(state => state.filters);
-  let filter = filters.newFilters[ index ];
+const InputColumn = props => {
   return (
     <MDBCol>
-      <MDBCol><h5>{ filter.title }</h5></MDBCol>
-      
-      <MDBListGroup className="labels-column">
-        { filter.values.map((value, key) => <FilterConditionLabel index={ index } value={ value } key={ key }/>) }
-      </MDBListGroup>
-      
+      {renderInput(props.filter)}
     </MDBCol>
   );
 };
 
-export default FilterColumn;
-
-
-
+export default InputColumn;
