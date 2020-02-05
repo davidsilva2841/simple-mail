@@ -11,16 +11,21 @@ const emails = require('../data/emails');
  * @returns {{access_token : *, refresh_token : *, scope : string[], token_type : string}}
  */
 const getToken = (accessToken, refreshToken) => {
+  // let scope = [
+  //   'profile',
+  //   'https://www.googleapis.com/auth/gmail.metadata',
+  //   'https://www.googleapis.com/auth/gmail.labels',
+  //   'https://www.googleapis.com/auth/gmail.modify',
+  //   'https://www.googleapis.com/auth/gmail.settings.basic',
+  //   'https://mail.google.com/'
+  // ];
 	return {
     "access_token": accessToken,
     "refresh_token": refreshToken,
     scope: [
       'profile',
-      'https://www.googleapis.com/auth/gmail.metadata',
-      'https://www.googleapis.com/auth/gmail.labels',
-      'https://www.googleapis.com/auth/gmail.modify',
       'https://www.googleapis.com/auth/gmail.settings.basic',
-      'https://mail.google.com/'
+      'https://www.googleapis.com/auth/gmail.labels'
     ],
     "token_type": "Bearer",
   };
@@ -34,9 +39,7 @@ const getToken = (accessToken, refreshToken) => {
  */
 const getGmail = (token) => {
   let auth = new google.auth.OAuth2(
-    config.get('client.id'),
-    config.get('client.secret'),
-    config.get('client.redirectUri'),
+    config.get('gmailClient.id'), config.get('gmailClient.secret'), config.get('gmailClient.redirectUri')
   );
   auth.setCredentials(token);
   

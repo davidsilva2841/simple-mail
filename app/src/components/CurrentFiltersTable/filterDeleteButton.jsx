@@ -29,6 +29,3 @@ const FilterDeleteButton = props => {
 };
 
 export default FilterDeleteButton;
-
-
-

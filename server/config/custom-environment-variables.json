@@ -1,0 +1,15 @@
+{
+  "gmailClient": {
+    "id": "GMAIL_CLIENT_ID",
+    "secret": "GMAIL_SECRET_ID",
+    "redirectUri": "GMAIL_REDIRECT_URI"
+  },
+  "cookiePrivateKey": "COOKIE_PRIVATE_KEY",
+  "postgreSQL": {
+    "host": "POSTGRESQL_HOST",
+    "port": "POSTGRESQL_PORT",
+    "database": "POSTGRESQL_DATABASE",
+    "user": "POSTGRESQL_USER",
+    "password": "POSTGRESQL_PASSWORD"
+  }
+}

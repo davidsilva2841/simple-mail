@@ -9,3 +9,6 @@ node_modules
 /server/data/ignore/dummyEmailsCleaned.js
 /server/scratch.js
 /server/data/ignore/
+/server/config/production.json
+/server/config/development_env.sh
+/server/config/production_env.sh

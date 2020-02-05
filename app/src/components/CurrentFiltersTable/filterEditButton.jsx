@@ -22,8 +22,3 @@ const FilterEditButton = (props) => {
 };
 
 export default FilterEditButton;
-
-
-
-
-

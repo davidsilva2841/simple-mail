@@ -1,7 +1,7 @@
 import * as types from '../constants/ActionTypes';
 
 
-export const userLoggedIn = () => {
+export const checkUserLoggedIn = () => {
   return {
     type: types.USER_LOGGED_IN,
     payload: (document.cookie !== '')

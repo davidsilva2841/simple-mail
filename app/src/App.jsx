@@ -11,8 +11,23 @@ import HomeScreen from "./containers/HomeScreen";
 import MailScreen from "./containers/MailScreen";
 
 import TestingScreen from "./containers/TestingScreen";
+import { checkUserLoggedIn, signOut, getEmails, getLabelsFilters } from "./actions";
 
 class App extends Component {
+  constructor (props) {
+    super(props);
+  }
+  
+  componentDidMount () {
+    const { user, checkUserLoggedIn, getEmails, getLabelsFilters } = this.props;
+    let userLoggedIn0 = user.loggedIn;
+    
+    checkUserLoggedIn();
+  }
+  check () {
+  
+  }
+  
   
   render () {
     return (
@@ -35,4 +50,17 @@ class App extends Component {
   }
 }
 
-export default App;
+// export default App;
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+  return {
+    user: state.user,
+    email: state.email
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { checkUserLoggedIn, signOut, getEmails, getLabelsFilters}
+)(App);

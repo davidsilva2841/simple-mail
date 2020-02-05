@@ -1,6 +1,5 @@
-import * as types from '../constants/ActionTypes';
-import simpleMail from "../api/simpleMail";
-
+import * as types from '../constants/ActionTypes.js';
+const api = require('../api/api.js');
 // --------------------------------------------------------------------------------------------------
 
 /**
@@ -9,8 +8,7 @@ import simpleMail from "../api/simpleMail";
  */
 export const getLabelsFilters = () => {
   return async (dispatch, getState) => {
-    simpleMail.get('/testing/gmail/labels-filters0')
-    // simpleMail.get('/gmail/labels-filters')
+    api.getLabelFilters()
       .then(result => {
         dispatch({
           type: types.GET_LABELS_FILTERS,
@@ -18,7 +16,7 @@ export const getLabelsFilters = () => {
         })
       })
       .catch(error => {
-        console.error(`FILE: emailActions.js getFilters()| ERROR: \n`, error);
+        console.error(`FILE: emailActions.js | ERROR: \n`, error);
       });
   }
 };
@@ -30,8 +28,7 @@ export const getLabelsFilters = () => {
  */
 export const getEmails = () => {
   return async (dispatch, getState) => {
-    simpleMail.get('/testing/gmail/emails0')
-    // simpleMail.get('/gmail/email')
+    api.getEmails()
       .then(result => {
         dispatch({
           type: types.GET_EMAILS,

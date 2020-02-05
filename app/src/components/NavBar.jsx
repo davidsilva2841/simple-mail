@@ -10,7 +10,7 @@ import {
   MDBCollapse,
   MDBBtn
 } from "mdbreact";
-import { userLoggedIn, signOut, getEmails, getLabelsFilters } from "../actions";
+import { checkUserLoggedIn, signOut, getEmails, getLabelsFilters } from "../actions";
 import { connect } from 'react-redux';
 // --------------------------------------------------------------------------------------------------
 
@@ -47,17 +47,14 @@ class NavBar extends Component {
   };
   
    componentDidMount () {
-     const { user, userLoggedIn, getEmails, getLabelsFilters } = this.props;
-     let loggedIn = user.userLoggedIn;
-     
-     // Check if user logged in
-     userLoggedIn();
-     
-     // If user just logged in
-     if (user.loggedIn !== loggedIn) {
-       // Get data
+     const { user, checkUserLoggedIn, getEmails, getLabelsFilters } = this.props;
+     let userLoggedIn0 = user.loggedIn;
+     checkUserLoggedIn();
+     console.log(`FILE: NavBar.jsx componentDidMount() | user.loggedIn: \n`, user.loggedIn);
+     if(user.loggedIn !== userLoggedIn0) {
+       // getEmails();
+       console.log(`FILE: NavBar.jsx componentDidMount() | running: \n`);
        getLabelsFilters();
-       getEmails();
      }
    }
   
@@ -76,17 +73,17 @@ class NavBar extends Component {
             <MDBNavbarNav left>
               
               {/* Links */ }
-              { navLink('Home', '/', <MDBIcon icon="home"/>) }
-              { navLink('Mail', '/mail', <MDBIcon icon="envelope"/>) }
-              { navLink('Sorting', '/sorting', <MDBIcon icon="random"/>) }
+              {/*{ navLink('Home', '/', <MDBIcon icon="home"/>) }*/}
+              {/*{ navLink('Mail', '/mail', <MDBIcon icon="envelope"/>) }*/}
+              {/*{ navLink('Sorting', '/sorting', <MDBIcon icon="random"/>) }*/}
               { navLink('Testing', '/testing', <MDBIcon icon="vials"/>) }
-              { navLink('Settings', '/settings', <MDBIcon icon="cog"/>) }
+              {/*{ navLink('Settings', '/settings', <MDBIcon icon="cog"/>) }*/}
   
               { user.loggedIn ? <MDBBtn color="danger" size="sm"
                 onClick={ () => signOut() }>Sign Out</MDBBtn> : null }
                 
               {/* Show log in if user not signed in */}
-              { user.loggedIn ? null : <a className="nav-link nav-item" href='/auth/google'>Login With Google</a> }
+              { user.loggedIn ? navLink('Mail', '/mail', <MDBIcon icon="envelope"/>)  : <a className="nav-link nav-item" href='/auth/google'>Login With Google</a> }
               
               
             
@@ -106,7 +103,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {userLoggedIn, signOut, getEmails, getLabelsFilters}
+  { checkUserLoggedIn, signOut, getEmails, getLabelsFilters}
 )
 (NavBar);
 
