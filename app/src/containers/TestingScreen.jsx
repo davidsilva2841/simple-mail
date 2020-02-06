@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { MDBContainer } from "mdbreact";
 import Notifications from "../components/notifications";
+import {getLabelsFilters} from "../state/ducks/user/actions";
 
 
-import { getLabelsFilters } from "../actions";
 import { connect } from 'react-redux';
 
 
@@ -15,15 +15,15 @@ class TestingScreen extends Component {
     return (
       <MDBContainer fluid>
         <h1>Testing Screen</h1>
-        {/*<button*/}
-        {/*  onClick={ () => {*/}
-        {/*    console.log('clicked');*/}
-        {/*    this.props.getLabelsFilters();*/}
-        {/*  } }*/}
-        {/*>*/}
-        {/*  click me*/}
-        {/*</button>*/}
-        <Notifications/>
+        
+        <button
+        onClick={() => {
+          console.log('clicked');
+          this.props.getLabelsFilters();
+        }}>
+          click
+        </button>
+        
       </MDBContainer>
     );
   }

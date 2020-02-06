@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { MDBInputGroup, MDBBtn, MDBCol } from "mdbreact";
-import {addFilterCondition} from "../../actions";
+import {addFilterCondition} from "../../state/ducks/filters/actions.js";
 
 
 

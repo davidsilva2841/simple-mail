@@ -1,5 +1,5 @@
-import * as types from '../constants/ActionTypes';
-const notifications = require('../services/notifications.js');
+import * as types from '../../../constants/ActionTypes';
+const notifications = require('../../../services/notifications.js');
 
 const initialState = {
   newFilters: [
@@ -114,11 +114,11 @@ const populateFilter = filter => {
  * @returns {boolean}
  */
 const canUpdate = (state) => {
-	if (state.status.running) {
-	  notifications.warning('Please wait for current action to complete');
-	  return false;
+  if (state.status.running) {
+    notifications.warning('Please wait for current action to complete');
+    return false;
   }
-	return true;
+  return true;
 };
 
 

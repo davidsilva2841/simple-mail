@@ -10,7 +10,7 @@ import {
   MDBCollapse,
   MDBBtn
 } from "mdbreact";
-import { checkUserLoggedIn, signOut, getEmails, getLabelsFilters } from "../actions";
+import { checkUserLoggedIn, signOut, getEmails, getLabelsFilters } from "../state/ducks/user/actions.js";
 import { connect } from 'react-redux';
 // --------------------------------------------------------------------------------------------------
 
@@ -47,15 +47,15 @@ class NavBar extends Component {
   };
   
    componentDidMount () {
-     const { user, checkUserLoggedIn, getEmails, getLabelsFilters } = this.props;
-     let userLoggedIn0 = user.loggedIn;
-     checkUserLoggedIn();
-     console.log(`FILE: NavBar.jsx componentDidMount() | user.loggedIn: \n`, user.loggedIn);
-     if(user.loggedIn !== userLoggedIn0) {
-       // getEmails();
-       console.log(`FILE: NavBar.jsx componentDidMount() | running: \n`);
-       getLabelsFilters();
-     }
+     // const { user, checkUserLoggedIn, getEmails, getLabelsFilters } = this.props;
+     // let userLoggedIn0 = user.loggedIn;
+     // checkUserLoggedIn();
+     // console.log(`FILE: NavBar.jsx componentDidMount() | user.loggedIn: \n`, user.loggedIn);
+     // if(user.loggedIn !== userLoggedIn0) {
+     //   // getEmails();
+     //   console.log(`FILE: NavBar.jsx componentDidMount() | running: \n`);
+     //   getLabelsFilters();
+     // }
    }
   
   render () {
@@ -78,13 +78,13 @@ class NavBar extends Component {
               {/*{ navLink('Sorting', '/sorting', <MDBIcon icon="random"/>) }*/}
               { navLink('Testing', '/testing', <MDBIcon icon="vials"/>) }
               {/*{ navLink('Settings', '/settings', <MDBIcon icon="cog"/>) }*/}
-  
-              { user.loggedIn ? <MDBBtn color="danger" size="sm"
-                onClick={ () => signOut() }>Sign Out</MDBBtn> : null }
-                
+              
               {/* Show log in if user not signed in */}
               { user.loggedIn ? navLink('Mail', '/mail', <MDBIcon icon="envelope"/>)  : <a className="nav-link nav-item" href='/auth/google'>Login With Google</a> }
+  
               
+              { user.loggedIn ? <MDBBtn color="danger" size="sm"
+                                        onClick={ () => signOut() }>Sign Out</MDBBtn> : null }
               
             
             </MDBNavbarNav>

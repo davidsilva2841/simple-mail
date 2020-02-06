@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { MDBSelect, MDBCol, MDBDropdown, MDBDropdownItem, MDBDropdownMenu, MDBDropdownToggle } from "mdbreact";
-import {addFilterCondition} from "../../actions";
+import {addFilterCondition} from "../../state/ducks/filters/actions.js";
 
 
 class InputAddLabel extends Component {
@@ -17,7 +17,7 @@ class InputAddLabel extends Component {
   }
   
   getOptions () {
-    let { labels } = this.props.email;
+    let { labels } = this.props.user;
     const { newFilters } = this.props.filters;
     
     // User can only remove labels for system filters
@@ -57,7 +57,7 @@ class InputAddLabel extends Component {
 
 function mapStateToProps (state) {
   return {
-    email: state.email,
+    user: state.user,
     filters: state.filters
   };
 }

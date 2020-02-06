@@ -1,6 +1,6 @@
-import * as types from '../constants/ActionTypes';
-import simpleMail from "../api/simpleMail";
-const status = require('../constants/StatusTypes');
+import simpleMail from "../../../api/simpleMail";
+import * as types from '../../../constants/ActionTypes';
+const status = require('../../../constants/StatusTypes');
 
 
 // --------------------------------------------------------------------------------------------------

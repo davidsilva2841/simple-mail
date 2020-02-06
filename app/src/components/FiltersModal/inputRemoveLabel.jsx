@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { MDBSelect, MDBCol, MDBRow } from "mdbreact";
-import { addFilterCondition } from "../../actions";
+import { addFilterCondition } from "../../state/ducks/filters/actions.js";
 
 
 class InputRemoveLabel extends Component {

@@ -10,8 +10,8 @@ import getRows from './rows.jsx';
 
 
 const Table = props => {
-  const email = useSelector(state => state.email);
-  let rows = getRows(email.filters);
+  const user = useSelector(state => state.user);
+  let rows = getRows(user.filters);
   let data = {
     columns,
     rows

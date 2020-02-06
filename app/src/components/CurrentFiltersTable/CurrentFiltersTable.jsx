@@ -6,8 +6,8 @@ import Table from "./table";
 import { useSelector } from 'react-redux';
 
 const CurrentFiltersTable = props => {
-  const email = useSelector(state => state.email);
-  if (email.filters.length === 0) {
+  const user = useSelector(state => state.user);
+  if (user.filters.length === 0) {
     return (
       <MDBContainer id="current-filters-table">
         <h2>No filters found</h2>

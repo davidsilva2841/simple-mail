@@ -11,7 +11,7 @@ import './assets/styles/main.scss';
 
 
 import { Provider } from 'react-redux';
-import store from './store/configureStore.js'
+import store from './state/store.js'
 
 ReactDOM.render(
   <Provider store={store}>

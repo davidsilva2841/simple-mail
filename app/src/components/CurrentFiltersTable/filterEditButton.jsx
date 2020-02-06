@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { MDBBtn, MDBIcon } from "mdbreact";
-import {toggleFilterModal, populateFilter} from "../../actions";
+import {toggleFilterModal, populateFilter} from "../../state/ducks/filters/actions.js";
 
 const FilterEditButton = (props) => {
   const dispatch = useDispatch();

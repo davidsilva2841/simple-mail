@@ -11,7 +11,7 @@ import HomeScreen from "./containers/HomeScreen";
 import MailScreen from "./containers/MailScreen";
 
 import TestingScreen from "./containers/TestingScreen";
-import { checkUserLoggedIn, signOut, getEmails, getLabelsFilters } from "./actions";
+import { checkUserLoggedIn, signOut, getEmails, getLabelsFilters } from "./state/ducks/user/actions.js";
 
 class App extends Component {
   constructor (props) {
@@ -22,7 +22,7 @@ class App extends Component {
     const { user, checkUserLoggedIn, getEmails, getLabelsFilters } = this.props;
     let userLoggedIn0 = user.loggedIn;
     
-    checkUserLoggedIn();
+    checkUserLoggedIn(user.loggedIn);
   }
   check () {
   

@@ -11,7 +11,7 @@ import {
 } from 'mdbreact';
 import FilterColumn from "./filterColumn";
 import FilterMessage from "./filterMessage";
-import {resetFilter, createFilter} from "../../actions";
+import {resetFilter, createFilter} from "../../state/ducks/filters/actions.js";
 import InputColumn from "./inputColumn";
 
 class Modal extends Component {

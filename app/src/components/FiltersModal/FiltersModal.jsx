@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MDBBtn, MDBContainer, MDBIcon } from "mdbreact";
 import Modal from "./modal";
-import { toggleFilterModal } from "../../actions";
+import { toggleFilterModal } from "../../state/ducks/filters/actions.js";
 
 const FiltersModal = props => {
   const dispatch = useDispatch();

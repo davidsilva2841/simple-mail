@@ -1,7 +1,7 @@
 import React from 'react';
 import { MDBBtn, MDBIcon, MDBPopover, MDBPopoverBody, MDBPopoverHeader } from "mdbreact";
 import {  useDispatch } from "react-redux";
-import { deleteFilter } from "../../actions";
+import { deleteFilter } from "../../state/ducks/filters/actions.js";
 
 const FilterDeleteButton = props => {
   const dispatch = useDispatch();
