@@ -1,10 +1,11 @@
+// User
 export const GET_LABELS_FILTERS = 'GET_LABELS_FILTERS';
 export const GET_EMAILS = 'GET_EMAILS';
-export const DELETE_FILTER = 'DELETE_FILTER';
+export const SET_LOGIN = 'SET_LOGIN';
+export const RESET_STATE = 'RESET_STATE';
 
-export const USER_LOGGED_IN = 'USER_LOGGED_IN';
-export const SIGN_OUT = 'SIGN_OUT';
 
+// Filters
 export const TOGGLE_FILTER_MODAL = 'TOGGLE_FILTER_MODAL';
 export const ADD_FILTER_CONDITION = 'ADD_FILTER_CONDITION';
 export const REMOVE_FILTER_CONDITION = 'REMOVE_FILTER_CONDITION';
@@ -12,6 +13,7 @@ export const RESET_FILTER = 'RESET_FILTER';
 export const CREATE_FILTER = 'CREATE_FILTER';
 export const POPULATE_FILTER = 'POPULATE_FILTER';
 export const UPDATE_STATUS = 'UPDATE_STATUS';
+
 
 
 

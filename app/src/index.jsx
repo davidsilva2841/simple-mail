@@ -1,3 +1,12 @@
+// Sentry logger service
+import * as Sentry from '@sentry/browser';
+
+if ( process.env.NODE_ENV !== 'development' ) {
+  console.log('Started sentry logger...');
+  Sentry.init({ dsn: "https://ceeae75246a14736922ea43d46d5ce88@sentry.io/2244671" });
+}
+
+
 // MDBReact
 import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 import './assets/vendors/bootstrap.min.css';

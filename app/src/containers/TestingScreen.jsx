@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { MDBContainer } from "mdbreact";
 import Notifications from "../components/notifications";
-import {getLabelsFilters} from "../state/ducks/user/actions";
+import {getLabelsFilters, getEmails} from "../state/ducks/user/actions";
 
 
 import { connect } from 'react-redux';
@@ -18,8 +18,8 @@ class TestingScreen extends Component {
         
         <button
         onClick={() => {
-          console.log('clicked');
-          this.props.getLabelsFilters();
+          // this.props.getLabelsFilters();
+          // this.props.getEmails();
         }}>
           click
         </button>
@@ -35,5 +35,5 @@ function mapStateToProps (state) {
 
 
 export default connect(
-  mapStateToProps, { getLabelsFilters }
+  mapStateToProps, { getLabelsFilters, getEmails }
 )(TestingScreen);

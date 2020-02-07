@@ -10,9 +10,9 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 
 passport.use(new GoogleStrategy({
-    clientID: config.get('client.id'),
-    clientSecret: config.get('client.secret'),
-    callbackURL: "http://localhost:3000/auth/google/callback",
+    clientID: config.get('gmailClient.id'),
+    clientSecret: config.get('gmailClient.secret'),
+    callbackURL: config.get('gmailClient.redirectUri')
   },
   function (accessToken, refreshToken, profile, cb) {
     let user = {
@@ -52,11 +52,8 @@ router.get('/auth/google', passport.authenticate('google',
       prompt: 'consent',
       scope: [
         'profile',
-        'https://www.googleapis.com/auth/gmail.metadata',
-        'https://www.googleapis.com/auth/gmail.labels',
-        'https://www.googleapis.com/auth/gmail.modify',
         'https://www.googleapis.com/auth/gmail.settings.basic',
-        'https://mail.google.com/'
+        'https://www.googleapis.com/auth/gmail.labels'
       ]
     }
   )
@@ -67,7 +64,7 @@ router.get('/auth/google', passport.authenticate('google',
 router.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    return res.status(200).cookie('cookie', req.session.passport, {signed: true}).redirect('/');
+    return res.status(200).cookie('cookie', req.session.passport, {signed: true}).redirect('/mail');
   }
 );
 

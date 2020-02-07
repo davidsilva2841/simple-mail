@@ -12,7 +12,6 @@ router.get('/labels-filters', auth, (req, res) => {
   let result = {};
   gapi.getLabels(gmail)
     .then(labels => {
-      console.log(labels);
       result['labels'] = emails.cleanLabels(labels);
       return gapi.getFilters(gmail);
     })
@@ -21,7 +20,6 @@ router.get('/labels-filters', auth, (req, res) => {
       res.send(result);
     })
     .catch(error => {
-      console.error(`FILE: gmail.js () | ERROR: \n`, error);
       res.sendStatus(500);
     })
 });
@@ -37,7 +35,6 @@ router.get('/mail', auth, (req, res) => {
       res.send(result);
     })
     .catch(error => {
-      console.error(`FILE: gmail.js | ERROR: \n`, error);
       res.sendStatus(500);
     });
 });
@@ -48,12 +45,9 @@ router.get('/mail', auth, (req, res) => {
  */
 router.delete('/filter', auth, (req, res) => {
   let { gmail } = req;
-  console.log(`FILE: gmail.js () | req.query.filterId: \n`, req.query.filterId);
   gapi.deleteFilter(gmail, req.query.filterId)
-    .then(result => {
-      console.log(`FILE: gmail.js () | result:`, result);
+    .then(() => {
     	res.sendStatus(200);
-      
     })
     .catch(() => {
     	res.sendStatus(500);
@@ -65,14 +59,11 @@ router.delete('/filter', auth, (req, res) => {
 router.post('/filter', auth, (req, res) => {
   let { gmail } = req;
   gapi.createFilter(gmail, req.body)
-    .then(result => {
-      console.log(`FILE: gmail.js POST result: \n`, result);
+    .then(() => {
       res.sendStatus(200);
     })
     .catch(error => {
-      console.error(`FILE: gmail.js () | ERROR: \n`, error);
       if (error.code === 400){
-        console.log('ers\n\n\n');
         res.status(400).send(error.errors);
       } else {
         res.sendStatus(500);

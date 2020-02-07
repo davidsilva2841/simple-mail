@@ -1,17 +1,16 @@
-// Sentry logger service
-import * as Sentry from '@sentry/browser';
-if (process.env.NODE_ENV === 'production') Sentry.init({dsn: "https://ceeae75246a14736922ea43d46d5ce88@sentry.io/2244671"});
 
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect, useRouteMatch } from "react-router-dom";
-
+import { connect } from 'react-redux';
 import NavBar from "./components/NavBar";
 import Notifications from "./components/notifications";
 import HomeScreen from "./containers/HomeScreen";
 import MailScreen from "./containers/MailScreen";
-
+import PrivacyScreen from "./containers/PrivacyScreen";
+import TermsScreen from "./containers/TermsScreen";
 import TestingScreen from "./containers/TestingScreen";
-import { checkUserLoggedIn, signOut, getEmails, getLabelsFilters } from "./state/ducks/user/actions.js";
+
+import { checkUserLoggedIn, signOut } from "./state/ducks/user/actions.js";
 
 class App extends Component {
   constructor (props) {
@@ -19,17 +18,12 @@ class App extends Component {
   }
   
   componentDidMount () {
-    const { user, checkUserLoggedIn, getEmails, getLabelsFilters } = this.props;
-    let userLoggedIn0 = user.loggedIn;
-    
-    checkUserLoggedIn(user.loggedIn);
+    const { user, checkUserLoggedIn } = this.props;
+    checkUserLoggedIn(user.fetchedLabelsFilters);
   }
-  check () {
-  
-  }
-  
   
   render () {
+    const {user} = this.props;
     return (
       <React.Fragment>
         <Router>
@@ -39,8 +33,11 @@ class App extends Component {
             <Switch>
               
               <Route exact path="/" component={ HomeScreen }/>
-              <Route exact path="/mail" component={ MailScreen }/>
-              <Route exact path="/testing" component={ TestingScreen }/>
+              
+              <Route exact path="/privacy" component={ PrivacyScreen }/>
+              <Route exact path="/terms" component={ TermsScreen }/>
+              
+              {user.isLoggedIn ?  <Route exact path="/mail" component={ MailScreen }/> : null}
             </Switch>
           </div>
         
@@ -50,8 +47,7 @@ class App extends Component {
   }
 }
 
-// export default App;
-import { connect } from 'react-redux';
+
 
 const mapStateToProps = state => {
   return {
@@ -62,5 +58,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { checkUserLoggedIn, signOut, getEmails, getLabelsFilters}
+  { checkUserLoggedIn, signOut }
 )(App);

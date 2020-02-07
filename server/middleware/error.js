@@ -8,7 +8,6 @@ router.use(Sentry.Handlers.errorHandler());
 
 // Optional fallthrough error handler
 router.use(function onError(err, req, res, next) {
-  console.log(`FILE: app.js onError() | err: \n`, err);
   // The error id is attached to `res.sentry` to be returned
   // and optionally displayed to the user for support.
   res.statusCode = 500;

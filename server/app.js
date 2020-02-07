@@ -22,11 +22,9 @@ app.use(cookieParser(config.get('cookiePrivateKey')));
 // --------------------------------------------------------------------------------------------------
 
 if (process.env.NODE_ENV === 'development') {
-  const {enableCORSMiddleware} = require('./middleware/development.js');
+  const {enableCORSMiddleware} = require('./startup/development.js');
   app.use(enableCORSMiddleware);
 }
-
-
 require("./startup/routes")(app);
 
 // --------------------------------------------------------------------------------------------------

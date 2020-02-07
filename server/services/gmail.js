@@ -11,14 +11,6 @@ const emails = require('../data/emails');
  * @returns {{access_token : *, refresh_token : *, scope : string[], token_type : string}}
  */
 const getToken = (accessToken, refreshToken) => {
-  // let scope = [
-  //   'profile',
-  //   'https://www.googleapis.com/auth/gmail.metadata',
-  //   'https://www.googleapis.com/auth/gmail.labels',
-  //   'https://www.googleapis.com/auth/gmail.modify',
-  //   'https://www.googleapis.com/auth/gmail.settings.basic',
-  //   'https://mail.google.com/'
-  // ];
 	return {
     "access_token": accessToken,
     "refresh_token": refreshToken,
@@ -120,7 +112,6 @@ const getMessages = (gmail, nextPageToken = '') => {
     nextPageToken: nextPageToken
   })
   .then(result => {
-    console.log(`FILE: gmail.js () | result: \n`, result);
     return result;
   });
 };
@@ -155,7 +146,6 @@ const getAllInfo = gmail => {
  * @returns {*}
  */
 const createLabel = (gmail, label) => {
-  console.log(`FILE: gmail.js createLabel() | : \n`, );
   return gmail.users.labels.create({
     userId: 'me',
     resource: label
@@ -170,7 +160,6 @@ const createLabel = (gmail, label) => {
  * @returns {*}
  */
 const createFilter = (gmail, filter) => {
-  console.log(`FILE: gmail.js createFilter() | filter: \n`, filter);
   return gmail.users.settings.filters.create({
     userId: 'me',
     resource: filter

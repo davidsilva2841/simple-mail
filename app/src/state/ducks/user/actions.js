@@ -3,14 +3,43 @@ import * as api from '../../../api/api.js';
 
 
 /**
+ * Sets login status
+ * @param status
+ * @returns {{payload : *, type : string}}
+ */
+export function setLogin (status) {
+	return {
+	  type: types.SET_LOGIN,
+    payload: status
+  }
+}
+
+
+/**
  * Check if user logged in
  * @returns {{payload : boolean, type : string}}
  */
-export function checkUserLoggedIn () {
-  return {
-    type: types.USER_LOGGED_IN,
-    payload: (document.cookie !== '')
+export function checkUserLoggedIn (fetchedFilters) {
+  return dispatch => {
+    let loggedIn = (document.cookie !== '');
+    dispatch(setLogin(true));
+    if (loggedIn && !fetchedFilters) {
+      dispatch(getLabelsFilters());
+    } else {
+      dispatch(setLogin(false));
+    }
   }
+}
+
+
+/**
+ * Reset the state of user
+ * @returns {{type : string}}
+ */
+export function resetState () {
+	return {
+    type: types.RESET_STATE
+  };
 }
 
 
@@ -20,9 +49,9 @@ export function checkUserLoggedIn () {
  */
 export function signOut () {
   document.cookie = 'cookie=; Max-Age=0';
-  return {
-    type: types.SIGN_OUT,
-    payload: (document.cookie !== '')
+  return dispatch => {
+    dispatch(resetState());
+    dispatch(setLogin(document.cookie !== ''));
   }
 }
 

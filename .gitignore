@@ -12,3 +12,4 @@ node_modules
 /server/config/production.json
 /server/config/development_env.sh
 /server/config/production_env.sh
+/server/.ebextensions/https-instance.config
