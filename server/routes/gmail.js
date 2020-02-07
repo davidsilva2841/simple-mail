@@ -7,7 +7,7 @@ const emails = require('../data/emails');
 /**
  * Get labels & filters
  */
-router.get('/labels-filters', auth, (req, res) => {
+router.get('/labels-filters', auth, (req, res, next) => {
   let {gmail} = req;
   let result = {};
   gapi.getLabels(gmail)
@@ -20,7 +20,7 @@ router.get('/labels-filters', auth, (req, res) => {
       res.send(result);
     })
     .catch(error => {
-      res.sendStatus(500);
+      next(error);
     })
 });
 
@@ -28,14 +28,14 @@ router.get('/labels-filters', auth, (req, res) => {
 /**
  * Get all mail for active user
  */
-router.get('/mail', auth, (req, res) => {
+router.get('/mail', auth, (req, res, next) => {
   let { gmail } = req;
   gapi.getAllInfo(gmail)
     .then(result => {
       res.send(result);
     })
     .catch(error => {
-      res.sendStatus(500);
+      next(error);
     });
 });
 
@@ -43,20 +43,31 @@ router.get('/mail', auth, (req, res) => {
 /**
  * Delete a filter
  */
-router.delete('/filter', auth, (req, res) => {
+router.delete('/filter', auth, (req, res, next) => {
   let { gmail } = req;
   gapi.deleteFilter(gmail, req.query.filterId)
     .then(() => {
     	res.sendStatus(200);
     })
-    .catch(() => {
-    	res.sendStatus(500);
+    .catch(error => {
+      if (error.code === 400){
+        try {
+          let message = error.errors[0].message;
+          res.status(400).send({error: message});
+        } catch (err) {
+          next(error);
+        }
+      } else {
+        next(error);
+      }
     });
 });
 
 
-
-router.post('/filter', auth, (req, res) => {
+/**
+ * Create a filter
+ */
+router.post('/filter', auth, (req, res, next) => {
   let { gmail } = req;
   gapi.createFilter(gmail, req.body)
     .then(() => {
@@ -64,11 +75,15 @@ router.post('/filter', auth, (req, res) => {
     })
     .catch(error => {
       if (error.code === 400){
-        res.status(400).send(error.errors);
+        try {
+          let message = error.errors[0].message;
+          res.status(400).send(message);
+        } catch (err) {
+          next(error);
+        }
       } else {
-        res.sendStatus(500);
+        next(error);
       }
-      
     });
 });
 

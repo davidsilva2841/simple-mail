@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { MDBListGroupItem, MDBChip } from "mdbreact";
-import {removeFilterCondition} from "../../state/ducks/filters/actions.js";
+import {removeFilterCondition} from "../../state/ducks/filtersModal/actions.js";
 
 const ConditionLabel = (props) => {
   const dispatch = useDispatch();

@@ -11,7 +11,8 @@ import {
 } from 'mdbreact';
 import FilterColumn from "./filterColumn";
 import FilterMessage from "./filterMessage";
-import {resetFilter, createFilter} from "../../state/ducks/filters/actions.js";
+// import {resetFilter, createFilter} from "../../state/ducks/filters/actions.js";
+import {createFilter} from "../../state/ducks/filters/actions.js";
 import InputColumn from "./inputColumn";
 
 class Modal extends Component {
@@ -21,7 +22,7 @@ class Modal extends Component {
   
   
   render () {
-    const { isOpen, filters, email } = this.props;
+    const { isOpen, filters, user } = this.props;
     return (
       <MDBContainer id="modal">
         <MDBModal size="fluid" isOpen={ isOpen } toggle={() => this.props.toggle()}>
@@ -48,13 +49,8 @@ class Modal extends Component {
           <MDBModalFooter id="footer">
             <MDBBtn rounded color="danger"  onClick={ () => this.props.toggle() } >Close</MDBBtn>
             <MDBBtn rounded color="danger"  onClick={ () => this.props.resetFilter()} >Reset</MDBBtn>
-            <MDBBtn rounded color="default"
-                    onClick={ () => {
-                      
-                      this.props.createFilter(filters.newFilters, email.labels, filters.originalFilterId);
-                      
-                    }
-            }>Submit</MDBBtn>
+            <MDBBtn rounded color="default" onClick={ () => this.props.createFilter(filters.newFilters, user.labels, filters.originalFilterId) }
+            >Submit</MDBBtn>
             
             
           </MDBModalFooter>
@@ -70,7 +66,7 @@ class Modal extends Component {
 function mapStateToProps (state) {
   return {
     filters: state.filters,
-    email: state.email
+    user: state.user
   };
 }
 

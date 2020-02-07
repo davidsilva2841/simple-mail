@@ -4,15 +4,14 @@ const publicRoute = require('../routes/public');
 const error = require('../middleware/error');
 
 
-module.exports = function(app) {
-  if (process.env.NODE_ENV === 'development') {
-    const testing = require("../routes/testing");
-    app.use("/api/testing/", testing);
-  }
-  
+module.exports = function (app) {
   app.use("/api/gmail", gmail);
   app.use("/", passport);
   app.use("/", publicRoute);
-  app.use(error);
-  
+  if ( process.env.NODE_ENV === 'development' ) {
+    const testing = require("../routes/testing");
+    app.use("/api/testing/", testing);
+  } else {
+    app.use(error);
+  }
 };

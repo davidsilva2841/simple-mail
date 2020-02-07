@@ -1,65 +1,73 @@
-import simpleMail from "../../../api/simpleMail";
-import * as types from '../../../constants/ActionTypes';
-const status = require('../../../constants/StatusTypes');
+import simpleMail from '../../../api/simpleMail.js';
+import * as types from '../../../constants/ActionTypes.js';
 
+const status = require('../../../constants/StatusTypes.js');
+const notifications = require('../../../services/notifications.js');
 
 // --------------------------------------------------------------------------------------------------
 
-/**
- * Toggle display of the filter modal
- * @param originalFilterId {string} - If editing existing filter, include this id
- * @returns {{payload : boolean, type : string}}
- */
-export const toggleFilterModal = (originalFilterId = '') => {
-  return {
-    type: types.TOGGLE_FILTER_MODAL,
-    payload: originalFilterId
-  }
-};
+// /**
+//  * Toggle display of the filter modal
+//  * @param originalFilterId
+//  * @returns {{payload : string, type : string}}
+//  */
+// export function toggleFilterModal (originalFilterId = '') {
+//   return {
+//     type: types.TOGGLE_FILTER_MODAL,
+//     payload: originalFilterId
+//   };
+// }
+//
+//
+// /**
+//  * Adds a new filter condition
+//  * @param index
+//  * @param value
+//  * @param oneAllowed {boolean} - If only one item is allowed to be selected at once
+//  * @returns {{payload : {index : *, value : *}, type : string}}
+//  */
+// export function addFilterCondition (index, value, oneAllowed = false) {
+//   return {
+//     type: types.ADD_FILTER_CONDITION,
+//     payload: {
+//       index, value, oneAllowed
+//     }
+//   };
+// }
+//
+//
+// /**
+//  * Removes a filter condition
+//  * @param index
+//  * @param value
+//  * @returns {{payload : {index : *, value : *}, type : string}}
+//  */
+// export function removeFilterCondition (index, value) {
+//   return {
+//     type: types.REMOVE_FILTER_CONDITION,
+//     payload: {
+//       index, value
+//     }
+//   };
+// }
+//
+//
+// /**
+//  * Resets current filter settings
+//  * @returns {{type : string}}
+//  */
+// export function resetFilter () {
+//   return {
+//     type: types.RESET_FILTER
+//   }
+// }
+// export const populateFilter = filter => {
+//   return {
+//     type: types.POPULATE_FILTER,
+//     payload: filter
+//   };
+// };
 
-
-/**
- * Adds a new filter condition
- * @param index
- * @param value
- * @param oneAllowed {boolean} - If only one item is allowed to be selected at once
- * @returns {{payload : {index : *, value : *}, type : string}}
- */
-export const addFilterCondition = (index, value, oneAllowed = false) => {
-  return {
-    type: types.ADD_FILTER_CONDITION,
-    payload: {
-      index, value, oneAllowed
-    }
-  };
-};
-
-
-/**
- * Removes a filter condition
- * @param index
- * @param value
- * @returns {{payload : {index : *, value : *}, type : string}}
- */
-export const removeFilterCondition = (index, value) => {
-  return {
-    type: types.REMOVE_FILTER_CONDITION,
-    payload: {
-      index, value
-    }
-  };
-};
-
-
-/**
- * Resets current filter settings
- * @returns {{type : string}}
- */
-export const resetFilter = () => {
-  return {
-    type: types.RESET_FILTER
-  }
-};
 
 
 /**
@@ -67,7 +75,7 @@ export const resetFilter = () => {
  * @param filterId
  * @returns {function(...[*]=)}
  */
-export const deleteFilter = filterId => {
+export function deleteFilter (filterId) {
   return async (dispatch, getState) => {
     dispatch(updateStatus('Deleting filter', status.inProgress, true));
     simpleMail.delete('/gmail/filter', { params: { filterId } })
@@ -80,7 +88,7 @@ export const deleteFilter = filterId => {
         console.error(`FILE: emailActions.js | ERROR: \n`, error);
       });
   }
-};
+}
 
 
 // --------------------------------------------------------------------------------------------------
@@ -92,7 +100,7 @@ export const deleteFilter = filterId => {
  * @param labels
  * @returns {{criteria : {from : string, to : string}, action : {addLabelIds : *, removeLabelIds : *}}}
  */
-const getPostBody = (newFilters, labels) => {
+function getPostBody (newFilters, labels) {
   const getLabelIds = (array, labels) => {
     return labels
       .filter(label => array.indexOf(label.name) !== -1)
@@ -114,26 +122,58 @@ const getPostBody = (newFilters, labels) => {
     }
   };
   
-};
+}
 
+
+// --------------------------------------------------------------------------------------------------
+
+// function updateStatus (message = '', type, running) {
+//   return {
+//     type: types.UPDATE_STATUS,
+//     payload: {
+//       running,
+//       message,
+//       type
+//     }
+//   }
+// }
+
+
+function updateStatus (dispatch, message = '', type, running) {
+  const update = () => {
+    return {
+      type: types.UPDATE_STATUS,
+      payload: {
+        running,
+        message,
+        type
+      }
+    }
+  };
+  dispatch(update());
+}
+
+
+// --------------------------------------------------------------------------------------------------
 
 /**
- * Updates status of filter modal
+ * If filters modal is ready for another action
+ * @param filters
+ * @param dispatch
  * @param message
- * @param type
- * @param running {boolean}
- * @returns {{payload : {message : string, type : *}, type : string}}
+ * @param status
+ * @param running
+ * @returns {boolean}
  */
-export const updateStatus = (message = '', type, running) => {
-  return {
-    type: types.UPDATE_STATUS,
-    payload: {
-      running,
-      message,
-      type
-    }
+function isReady ({ filters }, dispatch, message, status, running) {
+  if ( filters.status.running ) {
+    notifications.warning('Please wait for current operation to complete');
+    return false;
+  } else {
+    updateStatus(dispatch, message, status, running);
+    return true;
   }
-};
+}
 
 
 /**
@@ -143,40 +183,30 @@ export const updateStatus = (message = '', type, running) => {
  * @param originalFilterId {string}
  * @returns {function(...[*]=)}
  */
-export const createFilter = (newFilters, labels, originalFilterId) => {
+export function createFilter (newFilters, labels, originalFilterId)  {
   return async (dispatch, getState) => {
-    let { filters } = getState();
-    if ( filters.status.running ) return;
-    
-    dispatch(updateStatus('Creating filter...', status.inProgress, true));
+    if ( !isReady(getState(), dispatch, 'Creating filter', status.inProgress, true) ) return;
     
     simpleMail.post('/gmail/filter', getPostBody(newFilters, labels))
       .then(() => {
-        dispatch(updateStatus('Created filter', status.complete, false));
+        updateStatus(dispatch, 'Created filter', status.complete, false);
         if ( originalFilterId ) dispatch(deleteFilter(originalFilterId));
       })
       .catch(error => {
-        let message = 'Error while creating filter';
+        let message = 'Unknown error';
         try {
-          message = error.response.data[ 0 ].message;
-        } catch (err) {
-          console.error(`FILE: filtersActions.js () | err: \n`, err);
-          console.error(`FILE: filtersActions.js () | ERROR: \n`, error);
-        }
+          if (error.response.status === 400) {
+            message = error.response.message;
+          }
+        } catch(err) {
         
-        dispatch(updateStatus(`Error while creating filter: ${ message }`, status.error, false))
+        }
+        updateStatus(dispatch, `Error while creating filter: ${ message }`, status.error, false);
       });
     
   }
-};
+}
 
 
 // --------------------------------------------------------------------------------------------------
-
-export const populateFilter = filter => {
-  return {
-    type: types.POPULATE_FILTER,
-    payload: filter
-  };
-};
 
