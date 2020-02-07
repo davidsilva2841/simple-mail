@@ -1,16 +1,20 @@
-
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect, useRouteMatch } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect, useRouteMatch, withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import NavBar from "./components/NavBar";
-import Notifications from "./components/notifications";
-import HomeScreen from "./containers/HomeScreen";
-import MailScreen from "./containers/MailScreen";
-import PrivacyScreen from "./containers/PrivacyScreen";
-import TermsScreen from "./containers/TermsScreen";
-import TestingScreen from "./containers/TestingScreen";
 
-import { checkUserLoggedIn, signOut } from "./state/ducks/user/actions.js";
+// import Notifications from "./components/notifications";
+// import MailScreen from "./containers/MailScreen";
+
+import HomeScreen from './containers/HomeScreen';
+import PrivacyScreen from './containers/PrivacyScreen';
+import TermsScreen from './containers/TermsScreen';
+import TestingScreen from './containers/TestingScreen';
+
+import { getLoginStatus } from './features/user/userSlice.js';
+import { resetFiltersState } from './features/settings/settingsSlice.js';
+
+// --------------------------------------------------------------------------------------------------
 
 class App extends Component {
   constructor (props) {
@@ -18,26 +22,28 @@ class App extends Component {
   }
   
   componentDidMount () {
-    const { user, checkUserLoggedIn } = this.props;
-    checkUserLoggedIn(user.fetchedLabelsFilters);
+    this.props.getLoginStatus();
   }
   
   render () {
-    const {user} = this.props;
+    const { user } = this.props;
     return (
       <React.Fragment>
         <Router>
-          <Notifications/>
+          {/*<Notifications/>*/ }
           <NavBar/>
+          <button
+            onClick={() => this.props.resetFiltersState()}
+          >hi</button>
           <div id="screen">
             <Switch>
               
               <Route exact path="/" component={ HomeScreen }/>
-              
               <Route exact path="/privacy" component={ PrivacyScreen }/>
               <Route exact path="/terms" component={ TermsScreen }/>
+              <Route exact path="/testing" component={ TestingScreen }/>
               
-              {user.isLoggedIn ?  <Route exact path="/mail" component={ MailScreen }/> : null}
+              {/*{user.isLoggedIn ?  <Route exact path="/mail" component={ MailScreen }/> : null}*/ }
             </Switch>
           </div>
         
@@ -47,16 +53,15 @@ class App extends Component {
   }
 }
 
-
-
-const mapStateToProps = state => {
-  return {
-    user: state.user,
-    email: state.email
-  };
+const mapDispatch = {
+  getLoginStatus, resetFiltersState
 };
 
-export default connect(
-  mapStateToProps,
-  { checkUserLoggedIn, signOut }
-)(App);
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps, mapDispatch)(App);
+
+
+

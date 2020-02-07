@@ -7,11 +7,15 @@ const error = require('../middleware/error');
 module.exports = function (app) {
   app.use("/api/gmail", gmail);
   app.use("/", passport);
-  app.use("/", publicRoute);
+  
   if ( process.env.NODE_ENV === 'development' ) {
     const testing = require("../routes/testing");
     app.use("/api/testing/", testing);
-  } else {
+  }
+  
+  app.use("/", publicRoute);
+  
+  if (process.env.NODE_ENV !== 'development') {
     app.use(error);
   }
 };

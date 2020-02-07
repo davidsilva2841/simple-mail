@@ -1,23 +1,17 @@
-import React, { Component } from "react";
+import React from 'react';
+import { useSelector } from 'react-redux';
 import {
-  MDBNavbar,
-  MDBIcon,
-  MDBNavbarBrand,
-  MDBNavbarNav,
-  MDBNavItem,
-  MDBNavLink,
-  MDBLink,
   MDBDropdown,
-  MDBDropdownItem,
   MDBDropdownMenu,
   MDBDropdownToggle,
-  MDBNavbarToggler,
-  MDBCollapse,
+  MDBIcon,
+  MDBNavbar,
+  MDBNavItem,
+  MDBNavbarBrand,
+  MDBNavbarNav,
+  MDBNavLink,
   MDBBtn
 } from "mdbreact";
-import { checkUserLoggedIn, signOut, getEmails, getLabelsFilters } from "../state/ducks/user/actions.js";
-import { connect } from 'react-redux';
-import {Link} from 'react-router-dom';
 
 // --------------------------------------------------------------------------------------------------
 
@@ -37,83 +31,66 @@ const navLink = (title, href, icon = '') => {
 };
 
 
-/**
- * Navigation bar
- */
-class NavBar extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      isOpen: false
-    };
-  }
-  
-  
-  toggleCollapse = () => {
-    this.setState({ isOpen: !this.state.isOpen });
-  };
-  
-  
-  render () {
-    const { user, signOut } = this.props;
-    
+const getLinks = isLoggedIn => {
+  if ( isLoggedIn ) {
     return (
-      <div id="navbar">
-        <MDBNavbar color="indigo" dark expand="md" fixed={ (window.innerWidth < 1000) ? 'bottom' : 'top' }>
-          <MDBNavbarBrand>
-            <MDBNavLink to="/" className="title"><MDBIcon icon="mail-bulk"/>Simple Mail</MDBNavLink>
-          </MDBNavbarBrand>
-          <MDBNavbarToggler onClick={ this.toggleCollapse }/>
-          <MDBCollapse id="navbarCollapse3" isOpen={ this.state.isOpen } navbar>
-            <MDBNavbarNav left>
-              
-              {/* Links */ }
-              {/*{ navLink('Home', '/', <MDBIcon icon="home"/>) }*/}
-              {/*{ navLink('Mail', '/mail', <MDBIcon icon="envelope"/>) }*/}
-              {/*{ navLink('Sorting', '/sorting', <MDBIcon icon="random"/>) }*/}
-              {/*{ navLink('Testing', '/testing', <MDBIcon icon="vials"/>) }*/}
-              {/*{ navLink('Settings', '/settings', <MDBIcon icon="cog"/>) }*/}
-              
-              {/* Show log in if user not signed in */}
-              { user.isLoggedIn ? navLink('Mail', '/mail', <MDBIcon icon="envelope"/>)  : <a className="nav-link nav-item" href='/auth/google'>Login With Google</a> }
-  
-
-  
-              <MDBNavItem >
-                <MDBDropdown>
-                  <MDBDropdownToggle nav caret>
-                    <span className="mr-2">About</span>
-                  </MDBDropdownToggle>
-                  <MDBDropdownMenu>
-                    <MDBNavLink to="/privacy" className="dropdown-item">Privacy Policy</MDBNavLink>
-                    <MDBNavLink to="/terms" className="dropdown-item">Terms</MDBNavLink>
-                  </MDBDropdownMenu>
-                </MDBDropdown>
-              </MDBNavItem>
-              
-            </MDBNavbarNav>
-            <MDBNavbarNav right>
-              {/* Show log out if user signed in*/}
-              { user.isLoggedIn ? <MDBBtn color="danger" size="sm" onClick={ () => signOut() }>Sign Out</MDBBtn> : null }
-
-            </MDBNavbarNav>
-          </MDBCollapse>
-        </MDBNavbar>
-      </div>
+      <React.Fragment>
+        { navLink('Settings', '/settings', <MDBIcon icon="cogs"/>) }
+        {/*{ navLink('Mail', '/mail', <MDBIcon icon="envelope"/>) }*/}
+      </React.Fragment>
     );
+  } else {
+    return (
+      <React.Fragment>
+        { navLink('Login with Google', '/auth/google', <MDBIcon fab icon="google"/>) }
+      
+      </React.Fragment>
+    )
   }
-}
-
-const mapStateToProps = state => {
-  return {
-    user: state.user
-  };
 };
 
-export default connect(
-  mapStateToProps,
-  { checkUserLoggedIn, signOut, getEmails, getLabelsFilters}
-)
-(NavBar);
+
+const NavBar = () => {
+  const user = useSelector(state => state.user);
+  return (
+    <div id="navbar">
+      <MDBNavbar color="indigo" dark expand="md" fixed={ (window.innerWidth < 1000) ? 'bottom' : 'top' }>
+        <MDBNavbarBrand>
+          <MDBNavLink to="/" className="title"><MDBIcon icon="mail-bulk"/>Simple Mail</MDBNavLink>
+        </MDBNavbarBrand>
+        <MDBNavbarNav left>
+          
+          
+          { navLink('Testing', '/testing', <MDBIcon icon="vials"/>) }
+          { getLinks(user.isLoggedIn) }
+          
+          
+          <MDBDropdown>
+            <MDBDropdownToggle nav caret>
+              <span className="mr-1"><MDBIcon icon="info-circle" className="mr-1"/>About</span>
+            </MDBDropdownToggle>
+            <MDBDropdownMenu>
+              
+              <MDBNavLink to="/privacy" className="dropdown-item">
+                <MDBIcon icon="user-secret" className="mr-1"/>Privacy Policy</MDBNavLink>
+              <MDBNavLink to="/terms" className="dropdown-item">
+                <MDBIcon icon="file-contract" className="mr-1"/>Terms
+              </MDBNavLink>
+            </MDBDropdownMenu>
+          </MDBDropdown>
+        
+        </MDBNavbarNav>
+        <MDBNavbarNav right>
+          {/* Show log out if user signed in*/ }
+          { user.isLoggedIn ? <MDBBtn color="danger" size="sm" onClick={ () => console.log('hi')}>Sign Out</MDBBtn> : null }
+        
+        </MDBNavbarNav>
+      </MDBNavbar>
+    </div>
+  );
+  
+};
+
+export default NavBar;
 
 
