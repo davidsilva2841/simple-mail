@@ -1,16 +1,22 @@
-import React, { Component } from 'react';
-import {MDBContainer} from "mdbreact";
+import React, {Component} from 'react';
+import {MDBContainer} from 'mdbreact';
+
+import FiltersModal from '../components/FiltersModal/FiltersModal';
+import CurrentFiltersTable
+  from '../components/CurrentFiltersTable/CurrentFiltersTable';
 
 
 class SortingScreen extends Component {
-  render () {
+  render() {
     return (
-      <MDBContainer fluid>
-        <h1>Sorting Screen</h1>
-        
-      </MDBContainer>
+        <MDBContainer fluid>
+          <h1>Sorting Screen</h1>
+          <FiltersModal/>
+          <CurrentFiltersTable/>
+        </MDBContainer>
     );
   }
 }
+
 
 export default SortingScreen;

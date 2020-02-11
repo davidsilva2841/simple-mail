@@ -3,10 +3,38 @@ import * as types from '../../../constants/ActionTypes.js';
 
 const initialState = {
   newFilters: [
-    { index: 0, title: 'Sent to', name: 'to', values: [], value: '', type: 'address' },
-    { index: 1, title: 'From', name: 'from', values: [], value: '', type: 'address' },
-    { index: 2, title: 'Add Label', name: 'addLabelIds', values: [], value: '', type: 'addLabel' },
-    { index: 3, title: 'Remove Labels', name: 'removeLabelIds', values: [], value: '', type: 'removeLabel' }
+    {
+      index: 0,
+      title: 'Sent to',
+      name: 'to',
+      values: [],
+      value: '',
+      type: 'address',
+    },
+    {
+      index: 1,
+      title: 'From',
+      name: 'from',
+      values: [],
+      value: '',
+      type: 'address',
+    },
+    {
+      index: 2,
+      title: 'Add Label',
+      name: 'addLabelIds',
+      values: [],
+      value: '',
+      type: 'addLabel',
+    },
+    {
+      index: 3,
+      title: 'Remove Labels',
+      name: 'removeLabelIds',
+      values: [],
+      value: '',
+      type: 'removeLabel',
+    },
   ],
   isOpen: false,
 };
@@ -19,9 +47,9 @@ const initialState = {
  * @param oneAllowed
  * @returns {*}
  */
-const addFilterCondition = ({ newFilters }, { index, value, oneAllowed }) => {
+const addFilterCondition = ({newFilters}, {index, value, oneAllowed}) => {
   if ( oneAllowed ) {
-    newFilters[ index ].values = [value]
+    newFilters[ index ].values = [value];
   } else {
     let values = newFilters[ index ].values.map(value => value.toUpperCase());
     if ( values.indexOf(value.toUpperCase()) === -1 ) {
@@ -31,7 +59,6 @@ const addFilterCondition = ({ newFilters }, { index, value, oneAllowed }) => {
   return newFilters;
 };
 
-
 /**
  * Remove filter condition
  * @param newFilters
@@ -39,11 +66,11 @@ const addFilterCondition = ({ newFilters }, { index, value, oneAllowed }) => {
  * @param value
  * @returns {*}
  */
-const removeFilterCondition = ({ newFilters }, { index, value }) => {
-  newFilters[ index ].values = newFilters[ index ].values.filter(val => val !== value);
+const removeFilterCondition = ({newFilters}, {index, value}) => {
+  newFilters[ index ].values = newFilters[ index ].values.filter(
+      val => val !== value);
   return newFilters;
 };
-
 
 /**
  * Double check to see if still editing filter
@@ -51,7 +78,7 @@ const removeFilterCondition = ({ newFilters }, { index, value }) => {
  * @param newFilters
  * @returns {string|*}
  */
-const checkEditingStatus = ({ originalFilterId }, newFilters) => {
+const checkEditingStatus = ({originalFilterId}, newFilters) => {
   for (let filter of newFilters) {
     if ( filter.values.length > 0 ) {
       return originalFilterId;
@@ -60,19 +87,17 @@ const checkEditingStatus = ({ originalFilterId }, newFilters) => {
   return '';
 };
 
-
 /**
  * Reset filters
  * @param newFilters
  * @returns {*}
  */
-const resetFilters = ({ newFilters }) => {
+const resetFilters = ({newFilters}) => {
   for (let filter of newFilters) {
     filter.values = [];
   }
   return newFilters;
 };
-
 
 /**
  * Populates filter with existing filter for editing
@@ -80,7 +105,7 @@ const resetFilters = ({ newFilters }) => {
  * @returns {[{values : [], name : string, index : number, title : string, type : string, value : string}, {values : [], name : string, index : number, title : string, type : string, value : string}, {values : [], name : string, index : number, title : string, type : string, value : string}, {values : [], name : string, index : number, title : string, type : string, value : string}]|({values : [], name : string, index : number, title : string, type : string, value : string}|{values : [], name : string, index : number, title : string, type : string, value : string}|{values : [], name : string, index : number, title : string, type : string, value : string}|{values : [], name : string, index : number, title : string, type : string, value : string})[]}
  */
 const populateFilter = filter => {
-  let { newFilters } = initialState;
+  let {newFilters} = initialState;
   const getLabels = labels => {
     if ( labels.length > 0 ) {
       return labels.map(label => label.name);
@@ -96,7 +121,6 @@ const populateFilter = filter => {
   return newFilters;
 };
 
-
 /**
  * Checks if filter modal can be updated
  * @param state
@@ -110,40 +134,49 @@ const canUpdate = (state) => {
   return true;
 };
 
-
-export default (state = { ...initialState }, action) => {
+export default (state = {...initialState}, action) => {
   switch ( action.type ) {
     case types.TOGGLE_FILTER_MODAL: {
-      if ( !canUpdate(state) ) return { ...state };
+      if ( !canUpdate(state) ) return {...state};
       let newFilters = resetFilters(state);
       return {
         ...state,
         isOpen: !state.isOpen,
         newFilters,
         status: initialState.status,
-        originalFilterId: action.payload
-      }
+        originalFilterId: action.payload,
+      };
     }
     case types.ADD_FILTER_CONDITION: {
-      if ( !canUpdate(state) ) return { ...state };
+      if ( !canUpdate(state) ) return {...state};
       let newFilters = addFilterCondition(state, action.payload);
-      return { ...state, newFilters, status: initialState.status };
+      return {...state, newFilters, status: initialState.status};
     }
     case types.REMOVE_FILTER_CONDITION: {
-      if ( !canUpdate(state) ) return { ...state };
+      if ( !canUpdate(state) ) return {...state};
       let newFilters = removeFilterCondition(state, action.payload);
       let originalFilterId = checkEditingStatus(state, newFilters);
-      return { ...state, newFilters, originalFilterId, status: initialState.status };
+      return {
+        ...state,
+        newFilters,
+        originalFilterId,
+        status: initialState.status,
+      };
     }
     case types.RESET_FILTER: {
-      if ( !canUpdate(state) ) return { ...state };
+      if ( !canUpdate(state) ) return {...state};
       let newFilters = resetFilters(state);
-      return { ...state, newFilters, status: initialState.status, originalFilterId: '' };
+      return {
+        ...state,
+        newFilters,
+        status: initialState.status,
+        originalFilterId: '',
+      };
     }
     case types.POPULATE_FILTER: {
-      if ( !canUpdate(state) ) return { ...state };
+      if ( !canUpdate(state) ) return {...state};
       let newFilters = populateFilter(action.payload);
-      return { ...state, newFilters };
+      return {...state, newFilters};
     }
     default:
       return state;

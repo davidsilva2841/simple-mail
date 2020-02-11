@@ -4,7 +4,6 @@ export const GET_EMAILS = 'GET_EMAILS';
 export const SET_LOGIN = 'SET_LOGIN';
 export const RESET_STATE = 'RESET_STATE';
 
-
 // Filters
 export const TOGGLE_FILTER_MODAL = 'TOGGLE_FILTER_MODAL';
 export const ADD_FILTER_CONDITION = 'ADD_FILTER_CONDITION';

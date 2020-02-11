@@ -9,7 +9,7 @@ module.exports = [
     label: 'From Address',
     field: 'fromAddress',
     sort: 'asc',
-    width: 300
+    width: 300,
   },
   {
     label: 'Add Label',
@@ -25,11 +25,11 @@ module.exports = [
     label: 'Edit',
     field: 'editFilter',
     sort: 'asc',
-    width: 10
+    width: 10,
   },
   {
     label: 'Delete',
     field: 'deleteFilter',
-    width: 10
-  }
+    width: 10,
+  },
 ];

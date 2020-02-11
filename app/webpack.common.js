@@ -39,14 +39,14 @@ module.exports = {
   //   new BundleAnalyzerPlugin()
   // ],
   resolve: {
-    extensions: ['*', '.js', '.jsx']
+    extensions: ['*', '.js', '.jsx'],
   },
   module: {
     rules: [
       
       {
         test: /\.(js|jsx)$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -56,7 +56,8 @@ module.exports = {
             ],
             plugins: [
               '@babel/plugin-proposal-class-properties',
-              '@babel/plugin-transform-runtime'
+              '@babel/plugin-transform-runtime',
+              'react-hot-loader/babel'
             ]
           }
         }

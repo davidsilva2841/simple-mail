@@ -1,12 +1,42 @@
 import * as types from '../../../constants/ActionTypes';
+
+
 const notifications = require('../../../services/notifications.js');
 
 const initialState = {
   newFilters: [
-    { index: 0, title: 'Sent to', name: 'to', values: [], value: '', type: 'address' },
-    { index: 1, title: 'From', name: 'from', values: [], value: '', type: 'address' },
-    { index: 2, title: 'Add Label', name: 'addLabelIds', values: [], value: '', type: 'addLabel' },
-    { index: 3, title: 'Remove Labels', name: 'removeLabelIds', values: [], value: '', type: 'removeLabel' }
+    {
+      index: 0,
+      title: 'Sent to',
+      name: 'to',
+      values: [],
+      value: '',
+      type: 'address',
+    },
+    {
+      index: 1,
+      title: 'From',
+      name: 'from',
+      values: [],
+      value: '',
+      type: 'address',
+    },
+    {
+      index: 2,
+      title: 'Add Label',
+      name: 'addLabelIds',
+      values: [],
+      value: '',
+      type: 'addLabel',
+    },
+    {
+      index: 3,
+      title: 'Remove Labels',
+      name: 'removeLabelIds',
+      values: [],
+      value: '',
+      type: 'removeLabel',
+    },
   ],
   isOpen: false,
   
@@ -16,11 +46,10 @@ const initialState = {
     message: '',
     type: {
       className: '',
-      color: ''
-    }
-  }
+      color: '',
+    },
+  },
 };
-
 
 // /**
 //  * Add filter condition
@@ -115,7 +144,7 @@ const initialState = {
 //  * @returns {boolean}
 //  */
 // const canUpdate = (state) => {
-//   if (state.status.running) {
+//   if (state.statusTypes.running) {
 //     notifications.warning('Please wait for current action to complete');
 //     return false;
 //   }
@@ -123,39 +152,40 @@ const initialState = {
 // };
 //
 
-
 export default (state = {...initialState}, action) => {
   switch ( action.type ) {
-    // case types.TOGGLE_FILTER_MODAL: {
-    //   if(!canUpdate(state)) return {...state};
-    //   let newFilters = resetFilters(state);
-    //   return { ...state, isOpen: !state.isOpen, newFilters, status: initialState.status, originalFilterId: action.payload }
-    // }
-    // case types.ADD_FILTER_CONDITION: {
-    //   if(!canUpdate(state)) return {...state};
-    //   let newFilters = addFilterCondition(state, action.payload);
-    //   return { ...state, newFilters, status: initialState.status };
-    // }
-    // case types.REMOVE_FILTER_CONDITION: {
-    //   if(!canUpdate(state)) return {...state};
-    //   let newFilters = removeFilterCondition(state, action.payload);
-    //   let originalFilterId = checkEditingStatus(state, newFilters);
-    //   return { ...state, newFilters, originalFilterId, status: initialState.status };
-    // }
-    // case types.RESET_FILTER: {
-    //   if(!canUpdate(state)) return {...state};
-    //   let newFilters = resetFilters(state);
-    //   return { ...state, newFilters, status: initialState.status, originalFilterId: '' };
-    // }
-    // case types.POPULATE_FILTER: {
-    //   if(!canUpdate(state)) return {...state};
-    //   let newFilters = populateFilter(action.payload);
-    //   return { ...state, newFilters };
-    // }
+      // case types.TOGGLE_FILTER_MODAL: {
+      //   if(!canUpdate(state)) return {...state};
+      //   let newFilters = resetFilters(state);
+      //   return { ...state, isOpen: !state.isOpen, newFilters, statusTypes: initialState.statusTypes, originalFilterId: action.payload }
+      // }
+      // case types.ADD_FILTER_CONDITION: {
+      //   if(!canUpdate(state)) return {...state};
+      //   let newFilters = addFilterCondition(state, action.payload);
+      //   return { ...state, newFilters, statusTypes: initialState.statusTypes };
+      // }
+      // case types.REMOVE_FILTER_CONDITION: {
+      //   if(!canUpdate(state)) return {...state};
+      //   let newFilters = removeFilterCondition(state, action.payload);
+      //   let originalFilterId = checkEditingStatus(state, newFilters);
+      //   return { ...state, newFilters, originalFilterId, statusTypes: initialState.statusTypes };
+      // }
+      // case types.RESET_FILTER: {
+      //   if(!canUpdate(state)) return {...state};
+      //   let newFilters = resetFilters(state);
+      //   return { ...state, newFilters, statusTypes: initialState.statusTypes, originalFilterId: '' };
+      // }
+      // case types.POPULATE_FILTER: {
+      //   if(!canUpdate(state)) return {...state};
+      //   let newFilters = populateFilter(action.payload);
+      //   return { ...state, newFilters };
+      // }
     
     case types.UPDATE_STATUS: {
-      console.log(`FILE: filtersReducer.js () | action.payload: \n`, action.payload);
-      if (!state.isOpen) notifications.notify(action.payload.message, action.payload.type);
+      console.log(`FILE: filtersReducer.js () | action.payload: \n`,
+          action.payload);
+      if ( !state.isOpen ) notifications.notify(action.payload.message,
+          action.payload.type);
       return {...state, status: action.payload};
     }
     default:

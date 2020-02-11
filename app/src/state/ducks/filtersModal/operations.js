@@ -3,8 +3,8 @@ import {
   addFilterCondition,
   removeFilterCondition,
   resetFilter,
-  populateFilter
-} from "./actions";
+  populateFilter,
+} from './actions';
 
 
 export {
@@ -12,5 +12,5 @@ export {
   addFilterCondition,
   removeFilterCondition,
   resetFilter,
-  populateFilter
+  populateFilter,
 };

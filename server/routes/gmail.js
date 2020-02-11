@@ -53,7 +53,7 @@ router.delete('/filter', auth, (req, res, next) => {
       if (error.code === 400){
         try {
           let message = error.errors[0].message;
-          res.status(400).send({error: message});
+          res.status(400).send(message);
         } catch (err) {
           next(error);
         }

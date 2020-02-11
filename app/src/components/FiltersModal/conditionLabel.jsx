@@ -1,28 +1,29 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { MDBListGroupItem, MDBChip } from "mdbreact";
-import {removeFilterCondition} from "../../state/ducks/filtersModal/actions.js";
+import {connect} from 'react-redux';
+import {MDBListGroupItem, MDBChip} from 'mdbreact';
+
+import {removeFilterCondition} from '../../features/filtersModal/filtersModalSlice.js';
+
 
 const ConditionLabel = (props) => {
-  const dispatch = useDispatch();
-  const {index, value} = props;
+  const {index, value, removeFilterCondition} = props;
   return (
-      <MDBListGroupItem className="d-flex justify-content-between align-items-center">
-        <span>{value}</span>
+      <MDBListGroupItem
+          className="d-flex justify-content-between align-items-center">
+        <span>{ value }</span>
         <MDBChip
-          style={{margin:'0'}}
-          
-          tag="span"
-          text="white"
-          bgColor="danger-color"
-          onClick={() => dispatch(removeFilterCondition(index, value))}
+            style={ {margin: '0'} }
+            
+            tag="span"
+            text="white"
+            bgColor="danger-color"
+            onClick={ () => removeFilterCondition({index, value}) }
         >Delete</MDBChip>
       </MDBListGroupItem>
   );
-  
 };
 
-export default ConditionLabel;
+export default connect(null, {removeFilterCondition})(ConditionLabel);
 
 
 

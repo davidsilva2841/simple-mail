@@ -1,8 +1,8 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import {
-  MDBDataTable
-} from "mdbreact";
+  MDBDataTable,
+} from 'mdbreact';
 
 
 const columns = require('./columns.js');
@@ -10,26 +10,27 @@ import getRows from './rows.jsx';
 
 
 const Table = props => {
-  const user = useSelector(state => state.user);
-  let rows = getRows(user.filters);
+  const settings = useSelector(state => state.settings);
+  let rows = getRows(settings.filters);
   let data = {
     columns,
-    rows
+    rows,
   };
+  
   return (
-    <MDBDataTable
-      striped
-      bordered
-      hover
-      btn
-      autoWidth={false}
-      sortable={false}
-      searching={false}
-      noBottomColumns={true}
-      displayEntries={ false }
-      info={ false }
-      data={ data }
-    />
+      <MDBDataTable
+          striped
+          bordered
+          hover
+          btn
+          autoWidth={ false }
+          sortable={ false }
+          searching={ false }
+          noBottomColumns={ true }
+          displayEntries={ false }
+          info={ false }
+          data={ data }
+      />
   );
   
 };

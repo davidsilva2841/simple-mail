@@ -1,10 +1,18 @@
-import {  MDBToast } from "mdbreact";
-import * as status from '../constants/StatusTypes.js';
+import {MDBToast} from 'mdbreact';
+// import * as statusTypes from '../constants/StatusTypes.js';
+const statusTypes = require('../features/status/types.js');
 
 const settings = {
   position: 'top-right',
   autoClose: 5000,
   closeButton: true,
+};
+
+export const messages = {
+  waitForCurrentOperationToComplete: {
+    message: 'Please wait for the current operation to complete.',
+    statusType: statusTypes.inProgress,
+  },
 };
 
 export const info = message => {
@@ -23,21 +31,30 @@ export const error = message => {
   MDBToast.error(message, settings);
 };
 
-export const notify = (message, statusType) => {
-  switch (statusType) {
-    case status.inProgress:
+export const notify = ({message, statusType}) => {
+  switch ( statusType ) {
+    case statusTypes.inProgress:
       info(message);
       break;
-    case status.complete:
+    case statusTypes.complete:
       success(message);
       break;
-    case status.error:
+    case statusTypes.error:
       error(message);
       break;
     default:
       info(message);
   }
 };
+
+
+/**
+ * Notifies user that session is busy
+ */
+export function handleBusy() {
+  notify(messages.waitForCurrentOperationToComplete);
+}
+
 
 
 

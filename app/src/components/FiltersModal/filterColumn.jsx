@@ -1,42 +1,27 @@
 import React from 'react';
-import { MDBCol, MDBListGroup, MDBRow } from "mdbreact";
-import InputAddress from "./inputAddress";
-import InputRemoveLabel from "./inputRemoveLabel";
-import InputAddLabel from "./inputAddLabel";
-import { useSelector } from 'react-redux';
-import FilterConditionLabel from "./conditionLabel";
+import {MDBCol, MDBListGroup} from 'mdbreact';
+import {useSelector} from 'react-redux';
 
-
-const renderInput = (filter) => {
-  if ( filter.type === 'address' ) {
-    return (
-      <InputAddress index={ filter.index }/>
-    )
-  } else if ( filter.type === 'addLabel' ) {
-    return (
-      <InputAddLabel index={ filter.index }/>
-    );
-  } else if ( filter.type === 'removeLabel' ) {
-    return (
-      <InputRemoveLabel index={ filter.index }/>
-    )
-  }
-};
+import FilterConditionLabel from './conditionLabel';
 
 
 const FilterColumn = props => {
-  const { index } = props;
-  const filters = useSelector(state => state.filters);
-  let filter = filters.newFilters[ index ];
+  const {index} = props;
+  const filtersModal = useSelector(state => state.filtersModal);
+  let filter = filtersModal.filters[ index ];
+  
   return (
-    <MDBCol>
-      <MDBCol><h5>{ filter.title }</h5></MDBCol>
+      <MDBCol>
+        <MDBCol><h5>{ filter.title }</h5></MDBCol>
+        
+        <MDBListGroup className="labels-column">
+          { filter.values.map(
+              (value, key) => <FilterConditionLabel index={ index }
+                                                    value={ value }
+                                                    key={ key }/>) }
+        </MDBListGroup>
       
-      <MDBListGroup className="labels-column">
-        { filter.values.map((value, key) => <FilterConditionLabel index={ index } value={ value } key={ key }/>) }
-      </MDBListGroup>
-      
-    </MDBCol>
+      </MDBCol>
   );
 };
 

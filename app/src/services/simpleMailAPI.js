@@ -1,9 +1,13 @@
-import axios from "axios";
+import axios from 'axios';
 
-const url = (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/api' : 'https://simplemail.link/api';
+
+const url = (process.env.NODE_ENV === 'development') ?
+    'http://localhost:3000/api' :
+    'https://simplemail.link/api';
+
 const api = axios.create({
   baseURL: url,
-  withCredentials: true
+  withCredentials: true,
 });
 
 
@@ -11,9 +15,9 @@ const api = axios.create({
  * Get labels & filters
  * @returns {*}
  */
-export function getLabelFilters () {
-  return api.get('/testing/gmail/labels-filters0');
-  // return api.get('/gmail/labels-filters');
+export function getLabelFilters() {
+  // return api.get('/testing/gmail/labels-filters0');
+  return api.get('/gmail/labels-filters');
 }
 
 
@@ -21,9 +25,9 @@ export function getLabelFilters () {
  * Get emails
  * @returns {*}
  */
-export function getEmails () {
-  return api.get('/testing/gmail/email0');
-  // return api.get('/gmail/email');
+export function getEmails() {
+  // return api.get('/testing/gmail/email0');
+  return api.get('/gmail/email');
 }
 
 
@@ -32,7 +36,7 @@ export function getEmails () {
  * @param body {object}
  * @returns {*}
  */
-export function createFilter (body) {
+export function createFilter(body) {
   return api.post('/gmail/filter', body);
 }
 
@@ -42,14 +46,9 @@ export function createFilter (body) {
  * @param filterId {string}
  * @returns {*}
  */
-export function deleteFilter (filterId) {
-	return api.delete('/gmail/filter', { params: { filterId } });
+export function deleteFilter(filterId) {
+  return api.delete('/gmail/filter', {params: {filterId}});
 }
-
-
-
-
-
 
 
 export default api;

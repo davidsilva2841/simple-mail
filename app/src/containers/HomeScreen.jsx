@@ -1,21 +1,23 @@
-import React, { Component } from 'react';
-import {MDBContainer, MDBIcon} from "mdbreact";
+import React, {Component} from 'react';
+import {MDBContainer, MDBIcon} from 'mdbreact';
+
 
 class HomeScreen extends Component {
   
-  render () {
+  render() {
     return (
-      <MDBContainer fluid>
-
-        <h1>Home Screen (In Progress)</h1>
-        <span>
+        <MDBContainer fluid>
+          
+          <h1>Home Screen (In Progress)</h1>
+          <span>
           <MDBIcon far icon="smile-beam" size="5x"/>
           <MDBIcon icon="hammer" size="5x"/>
         </span>
         
-      </MDBContainer>
+        </MDBContainer>
     );
   }
 }
+
 
 export default HomeScreen;

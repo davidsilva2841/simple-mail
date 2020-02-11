@@ -9,6 +9,12 @@ module.exports = merge(common, {
   plugins: [
     new webpack.HotModuleReplacementPlugin()
   ],
+  resolve: {
+    extensions: ['*', '.js', '.jsx'],
+    alias: {
+      'react-dom': '@hot-loader/react-dom'
+    }
+  },
   optimization: {
     usedExports: true,
   },
@@ -16,7 +22,8 @@ module.exports = merge(common, {
     historyApiFallback: true,
     contentBase: common.output.path,
     inline:true,
-    // hot: true,
+    hot: true,
+    open: true,
     disableHostCheck: true,
     port: 9000
   },

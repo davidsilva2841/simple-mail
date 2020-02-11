@@ -15,12 +15,21 @@ import thunk from 'redux-thunk';
 //   composeEnhancers(applyMiddleware(thunk))
 // );
 
-import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "./rootReducer";
+import {configureStore} from '@reduxjs/toolkit';
+import rootReducer from './rootReducer';
+
 
 const store = configureStore({
-  reducer: rootReducer
+  reducer: rootReducer,
 });
 
+// ***
+if ( process.env.NODE_ENV === 'development' && module.hot ) {
+  module.hot.accept('./rootReducer', () => {
+    const newRootReducer = require('./rootReducer').default;
+    // const newRootReducer = require('./rootReducer');
+    store.replaceReducer(newRootReducer);
+  });
+}
 
 export default store;
