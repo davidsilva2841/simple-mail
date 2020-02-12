@@ -1,5 +1,4 @@
 import {MDBToast} from 'mdbreact';
-// import * as statusTypes from '../constants/StatusTypes.js';
 const statusTypes = require('../features/status/types.js');
 
 const settings = {

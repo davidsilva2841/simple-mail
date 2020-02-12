@@ -22,8 +22,6 @@ const statusSlice = createSlice({
     
 
     handleSetStatus (state, action) {
-      console.log(`FILE: statusSlice.js handleSetStatus() | action:`, action);
-      console.log(`FILE: statusSlice.js handleSetStatus() | action.payload:`, action.payload);
       return {...action.payload};
     },
     /**
@@ -71,6 +69,8 @@ export function handleError(error, busy = false) {
     try {
       console.error(error);
       if ( error.response && error.response.data ) {
+        console.log(`FILE: statusSlice.js () | error.response:`, error.response);
+        console.log(`FILE: statusSlice.js () | error.response.data:`, error.response.data);
         dispatch(setStatus(busy, error.response.data || 'Error', statusTypes.error));
       }
     } catch (err) {
@@ -84,8 +84,12 @@ export function handleError(error, busy = false) {
 
 export function setStatus (busy, message, statusType) {
   return async (dispatch, getState) => {
+    let filtersModalIsOpen = getState().filtersModal.isOpen;
+    if (!filtersModalIsOpen) {
+      notifications.notify({message, statusType});
+    }
     let display = {
-      filtersModal: getState().filtersModal.isOpen
+      filtersModal: filtersModalIsOpen
     };
     const {handleSetStatus} = statusSlice.actions;
     dispatch(handleSetStatus({busy, message, type: statusType, display}))

@@ -17,7 +17,7 @@ const isValidUser = user => {
     first_name: Joi.string(),
     last_name: Joi.string(),
   };
-  return Joi.validate(user, schema, { allowUnknown: true });
+  return Joi.validate(user, schema, {allowUnknown: true});
 };
 
 
@@ -27,10 +27,9 @@ const isValidUser = user => {
  * @returns {*}
  */
 const userExists = user => {
-  return db('users').where('profile_id', user.profile_id)
-    .then(res => {
-      return res.length > 0;
-    })
+  return db('users').where('profile_id', user.profile_id).then(res => {
+    return res.length > 0;
+  });
 };
 
 
@@ -40,16 +39,13 @@ const userExists = user => {
  * @returns {*}
  */
 const addUser = user => {
-  return userExists(user)
-    .then(exists => {
-      if ( exists ) {
-        return db('users')
-          .where('profile_id', user.profile_id)
-          .update(user);
-      } else {
-        return db('users').insert(user);
-      }
-    })
+  return userExists(user).then(exists => {
+    if ( exists ) {
+      return db('users').where('profile_id', user.profile_id).update(user);
+    } else {
+      return db('users').insert(user);
+    }
+  });
   
 };
 
@@ -64,10 +60,8 @@ const getUser = user => {
 };
 
 
-
-
 module.exports = {
   getUser,
   isValidUser,
-  addUser
+  addUser,
 };

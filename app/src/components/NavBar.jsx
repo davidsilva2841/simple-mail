@@ -62,7 +62,7 @@ const NavBar = () => {
           <MDBNavbarNav left>
             
             
-            { navLink('Testing', '/testing', <MDBIcon icon="vials"/>) }
+            {/*{ navLink('Testing', '/testing', <MDBIcon icon="vials"/>) }*/}
             { getLinks(user.isLoggedIn) }
             
             

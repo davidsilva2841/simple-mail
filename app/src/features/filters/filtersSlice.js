@@ -1,11 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 import * as simpleMail from '../../services/simpleMailAPI.js';
-import {setStatus, handleError, isBusy} from '../status/statusSlice';
+import {setStatus, handleError, isBusy} from '../status/statusSlice.js';
 import {getLabelsFilters} from '../settings/settingsSlice.js';
-
-
-// const statusTypes = require('../../constants/StatusTypes.js');
 const statusTypes = require('../status/types.js');
 
 // --------------------------------------------------------------------------------------------------

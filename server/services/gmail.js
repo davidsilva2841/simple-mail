@@ -1,4 +1,4 @@
-const { google } = require('googleapis');
+const {google} = require('googleapis');
 const config = require('config');
 const emails = require('../data/emails');
 
@@ -11,15 +11,15 @@ const emails = require('../data/emails');
  * @returns {{access_token : *, refresh_token : *, scope : string[], token_type : string}}
  */
 const getToken = (accessToken, refreshToken) => {
-	return {
-    "access_token": accessToken,
-    "refresh_token": refreshToken,
+  return {
+    'access_token': accessToken,
+    'refresh_token': refreshToken,
     scope: [
       'profile',
       'https://www.googleapis.com/auth/gmail.settings.basic',
-      'https://www.googleapis.com/auth/gmail.labels'
+      'https://www.googleapis.com/auth/gmail.labels',
     ],
-    "token_type": "Bearer",
+    'token_type': 'Bearer',
   };
 };
 
@@ -31,11 +31,11 @@ const getToken = (accessToken, refreshToken) => {
  */
 const getGmail = (token) => {
   let auth = new google.auth.OAuth2(
-    config.get('gmailClient.id'), config.get('gmailClient.secret'), config.get('gmailClient.redirectUri')
+      config.get('gmailClient.id'), config.get('gmailClient.secret'), config.get('gmailClient.redirectUri'),
   );
   auth.setCredentials(token);
   
-  return google.gmail({ version: 'v1', auth: auth });
+  return google.gmail({version: 'v1', auth: auth});
 };
 
 
@@ -45,10 +45,9 @@ const getGmail = (token) => {
  * @returns {*}
  */
 const getLabels = (gmail) => {
-  return gmail.users.labels.list({ userId: 'me' })
-    .then(result => {
-      return result.data.labels;
-    });
+  return gmail.users.labels.list({userId: 'me'}).then(result => {
+    return result.data.labels;
+  });
 };
 
 
@@ -58,10 +57,9 @@ const getLabels = (gmail) => {
  * @returns {*}
  */
 const getFilters = (gmail) => {
-  return gmail.users.settings.filters.list({userId: 'me'})
-    .then(result => {
-      return result.data.filter;
-    });
+  return gmail.users.settings.filters.list({userId: 'me'}).then(result => {
+    return result.data.filter;
+  });
 };
 
 
@@ -76,8 +74,8 @@ const getMessage = (gmail, id) => {
     id: id,
     userId: 'me',
     format: 'metadata',
-    metadataHeaders: ['From', 'Delivered-To']
-  })
+    metadataHeaders: ['From', 'Delivered-To'],
+  });
 };
 
 
@@ -88,14 +86,13 @@ const getMessage = (gmail, id) => {
  * @returns {PromiseLike<{snippet : string, headers : string, id : *}> | Promise<{snippet : (*|string), headers : string, id : *}>}
  */
 const getInfo = (gmail, id) => {
-  return getMessage(gmail, id)
-    .then(result => {
-      return {
-        id: id,
-        snippet: result.data.snippet || '',
-        headers: result.data.payload.headers || ''
-      };
-    })
+  return getMessage(gmail, id).then(result => {
+    return {
+      id: id,
+      snippet: result.data.snippet || '',
+      headers: result.data.payload.headers || '',
+    };
+  });
 };
 
 
@@ -109,9 +106,8 @@ const getMessages = (gmail, nextPageToken = '') => {
   return gmail.users.messages.list({
     userId: 'me',
     maxResults: 500,
-    nextPageToken: nextPageToken
-  })
-  .then(result => {
+    nextPageToken: nextPageToken,
+  }).then(result => {
     return result;
   });
 };
@@ -123,33 +119,43 @@ const getMessages = (gmail, nextPageToken = '') => {
  * @returns {PromiseLike<unknown[]> | Promise<unknown[]>}
  */
 const getAllInfo = gmail => {
-  return getMessages(gmail)
-    .then(result => {
-      let messages = result.data.messages;
-      
-      let promises = [];
-      for (let message of messages) {
-        promises.push(getInfo(gmail, message.id));
-      }
-      return Promise.all(promises);
-    })
-    .then(data => {
-      return emails.clean(data);
-    })
+  return getMessages(gmail).then(result => {
+    let messages = result.data.messages;
+    
+    let promises = [];
+    for (let message of messages) {
+      promises.push(getInfo(gmail, message.id));
+    }
+    return Promise.all(promises);
+  }).then(data => {
+    return emails.clean(data);
+  });
 };
 
 
 /**
  * Create a label
  * @param gmail
- * @param label
+ * @param {Object} label
+ *
  * @returns {*}
  */
 const createLabel = (gmail, label) => {
+    let resource = {
+      "labelListVisibility": "labelShow",
+      "messageListVisibility": "show",
+      "name": "",
+      "color": {
+        "textColor": "",
+        "backgroundColor": ""
+      }
+    };
+    
+    
   return gmail.users.labels.create({
     userId: 'me',
-    resource: label
-  })
+    resource: label,
+  });
 };
 
 
@@ -162,8 +168,8 @@ const createLabel = (gmail, label) => {
 const createFilter = (gmail, filter) => {
   return gmail.users.settings.filters.create({
     userId: 'me',
-    resource: filter
-  })
+    resource: filter,
+  });
 };
 
 
@@ -175,8 +181,8 @@ const createFilter = (gmail, filter) => {
 const deleteFilter = (gmail, filterId) => {
   return gmail.users.settings.filters.delete({
     userId: 'me',
-    id: filterId
-  })
+    id: filterId,
+  });
 };
 
 

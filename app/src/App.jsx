@@ -18,7 +18,7 @@ import Notifications from './components/notifications';
 import HomeScreen from './containers/HomeScreen';
 import PrivacyScreen from './containers/PrivacyScreen';
 import TermsScreen from './containers/TermsScreen';
-import TestingScreen from './containers/TestingScreen';
+// import TestingScreen from './containers/TestingScreen';
 import SortingScreen from './containers/SortingScreen';
 
 import {getLoginStatus} from './features/user/userSlice.js';
@@ -39,7 +39,6 @@ class App extends Component {
   
   
   render() {
-    const {user} = this.props;
     return (
         <React.Fragment>
           <Router>
@@ -52,9 +51,8 @@ class App extends Component {
                 <Route exact path="/privacy" component={ PrivacyScreen }/>
                 <Route exact path="/terms" component={ TermsScreen }/>
                 <Route exact path="/sorting" component={ SortingScreen }/>
-                <Route exact path="/testing" component={ TestingScreen }/>
+                {/*<Route exact path="/testing" component={ TestingScreen }/>*/}
                 
-                {/*{user.isLoggedIn ?  <Route exact path="/mail" component={ MailScreen }/> : null}*/ }
               </Switch>
             </div>
           

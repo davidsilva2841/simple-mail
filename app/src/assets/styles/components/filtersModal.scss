@@ -6,27 +6,27 @@
     }
     
     .modal-content {
-        padding: 0 1.5rem;
+        padding: 0 1.5em;
     }
     .modal-body {
-        padding: .16rem 0;
+        padding: .16em 0;
     }
     
     
     .col {
         text-align: center;
-        padding: 5px;
+        padding: .3em;
     }
     
     .labels-column {
-        font-size: .8rem;
+        font-size: .8em;
         li {
-            padding: .25rem .5rem;
+            padding: .25em .5em;
         }
     }
     
     #inputs-row {
-        margin-top: 1rem;
+        margin-top: 1em;
         border-top: 1px solid rgb(233, 236, 239);
         .input-filter {
             width: 100%;
@@ -38,11 +38,11 @@
     }
     
     .modal-footer {
-        padding: .25rem;
+        padding: .25em;
         button {
             font-weight: bold;
-            padding: .5rem 1rem;
-            font-size: .88rem;
+            padding: .5em 1em;
+            font-size: .88em;
             text-transform: none;
         }
     }

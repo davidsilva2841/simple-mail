@@ -47,6 +47,7 @@
     "@sentry/browser": "^5.11.0",
     "axios": "^0.19.0",
     "mdbreact": "git+https://oauth2:iKfa5eiyeyFaxJe7b4hd@git.mdbootstrap.com/mdb/react/re-pro.git",
+    "mdb-react-sortable": "file:./src/assets/vendors/mdb/packages/mdb-react-sortable-4.16.0.tgz",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",

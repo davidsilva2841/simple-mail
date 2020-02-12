@@ -6,17 +6,15 @@ const _ = require('underscore');
  * @returns {string}
  */
 const getSender = (headers) => {
-  let receivedFrom =  headers.filter(header => header.name === 'From');
-  if (receivedFrom.length) {
-    receivedFrom = receivedFrom[0].value;
+  let receivedFrom = headers.filter(header => header.name === 'From');
+  if ( receivedFrom.length ) {
+    receivedFrom = receivedFrom[ 0 ].value;
   } else {
     return 'MISSING_FROM';
   }
   
-  if (receivedFrom.includes(' ')) {
-    receivedFrom = receivedFrom
-      .split('<')[1]
-      .replace('>', '');
+  if ( receivedFrom.includes(' ') ) {
+    receivedFrom = receivedFrom.split('<')[ 1 ].replace('>', '');
   }
   return receivedFrom;
 };
@@ -28,17 +26,15 @@ const getSender = (headers) => {
  * @returns {*}
  */
 const getSentTo = (headers) => {
-  let sentTo =  headers.filter(header => header.name === 'Delivered-To');
+  let sentTo = headers.filter(header => header.name === 'Delivered-To');
   sentTo.length === 0 ?
-    sentTo = sentTo =  headers.filter(header => header.name === 'From')
-    : null ;
+      sentTo = sentTo = headers.filter(header => header.name === 'From')
+      : null;
   
-  if (sentTo.includes('<')) {
-    sentTo = sentTo
-      .split('<')[1]
-      .replace('>', '');
+  if ( sentTo.includes('<') ) {
+    sentTo = sentTo.split('<')[ 1 ].replace('>', '');
   }
-  return sentTo[0].value;
+  return sentTo[ 0 ].value;
 };
 
 
@@ -49,19 +45,19 @@ const getSentTo = (headers) => {
 const getCleanedEmails = emails => {
   let cleanedEmails = [];
   
-  for(let email of emails) {
-
+  for (let email of emails) {
+    
     let sender = getSender(email.headers);
     let sentTo = getSentTo(email.headers);
-    let sendersDomain = '@' + sender.split('@')[1];
+    let sendersDomain = '@' + sender.split('@')[ 1 ];
     cleanedEmails.push({
       sender,
       sentTo,
       sendersDomain,
-      id: email.id
+      id: email.id,
     });
-
-
+    
+    
   }
   return cleanedEmails;
 };
@@ -77,7 +73,7 @@ const clean = emails => {
   let sumByDomain = _.extend({}, _.countBy(cleanedEmails, 'sendersDomain'));
   return {
     emails: cleanedEmails,
-    sumByDomain
+    sumByDomain,
   };
 };
 
@@ -87,7 +83,7 @@ const clean = emails => {
  * @returns {unknown[]}
  */
 const sortLabels = labels => {
-	return _.sortBy(labels, 'name');
+  return _.sortBy(labels, 'name');
 };
 
 
@@ -98,14 +94,14 @@ const sortLabels = labels => {
  */
 const cleanLabels = labels => {
   let cleanedLabels = [];
-  for(let label of labels) {
-  	if (!label.color){
-  	  label.color = {
-  	    textColor: '',
-        backgroundColor: ''
-      }
+  for (let label of labels) {
+    if ( !label.color ) {
+      label.color = {
+        textColor: '',
+        backgroundColor: '',
+      };
     }
-  	cleanedLabels.push(label)
+    cleanedLabels.push(label);
   }
   
   return _.sortBy(cleanedLabels, 'name');
@@ -122,33 +118,33 @@ const cleanFilters = (filters, labels) => {
   let cleanedFilters = [];
   
   const getActions = (actionList) => {
-    if (!actionList) {
+    if ( !actionList ) {
       return [];
     }
     
-  	let actions = [];
-    for(let action of actionList) {
-  		actions.push({
+    let actions = [];
+    for (let action of actionList) {
+      actions.push({
         id: action,
-        name: _.findWhere(labels, {id: action}).name
-      })
-  	}
+        name: _.findWhere(labels, {id: action}).name,
+      });
+    }
     return actions;
   };
   
-  for(let filter of filters) {
+  for (let filter of filters) {
     let newFilter = {
-      id: filter.id
+      id: filter.id,
     };
-    if (filter.action) {
+    if ( filter.action ) {
       newFilter.addLabels = filter.action.addLabelIds ? getActions(filter.action.addLabelIds) : [];
-      newFilter.removeLabels = filter.action.removeLabelIds ?  getActions(filter.action.removeLabelIds) : [];
+      newFilter.removeLabels = filter.action.removeLabelIds ? getActions(filter.action.removeLabelIds) : [];
     }
-    if (filter.criteria) {
-      newFilter.sentToAddress = filter.criteria.to ? filter.criteria.to.split(',')  : [];
-      newFilter.fromAddress = filter.criteria['from'] ? filter.criteria['from'].split(',')  : [];
+    if ( filter.criteria ) {
+      newFilter.sentToAddress = filter.criteria.to ? filter.criteria.to.split(',') : [];
+      newFilter.fromAddress = filter.criteria[ 'from' ] ? filter.criteria[ 'from' ].split(',') : [];
     }
-
+    
     
     cleanedFilters.push(newFilter);
   }
@@ -156,12 +152,11 @@ const cleanFilters = (filters, labels) => {
 };
 
 
-
 module.exports = {
   clean,
   sortLabels,
   cleanLabels,
-  cleanFilters
+  cleanFilters,
 };
 
 

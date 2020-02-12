@@ -29,15 +29,13 @@ router.get('/users/add', (req, res) => {
   users.addUser({
     username: 'user0',
     refresh_token: 'test0',
-    access_token: 'test0'
-  })
-    .then(result => {
-      res.sendStatus(200);
-    })
-    .catch(error => {
-      console.error(`FILE: testing.js | ERROR: \n`, error);
-      res.sendStatus(500);
-    });
+    access_token: 'test0',
+  }).then(result => {
+    res.sendStatus(200);
+  }).catch(error => {
+    console.error(`FILE: testing.js | ERROR: \n`, error);
+    res.sendStatus(500);
+  });
 });
 
 // --------------------------------------------------------------------------------------------------
@@ -49,14 +47,12 @@ router.get('/users/add', (req, res) => {
 router.get('/gmail/labels', (req, res) => {
   let token = gapi.getToken(config.get('testUser.accessToken'), config.get('testUser.refreshToken'));
   let gmail = gapi.getGmail(token);
-  gapi.getLabels(gmail)
-    .then(result => {
-      res.send(result);
-    })
-    .catch(error => {
-      console.error(`FILE: testing.js () | ERROR: \n`, error);
-      res.sendStatus(500);
-    })
+  gapi.getLabels(gmail).then(result => {
+    res.send(result);
+  }).catch(error => {
+    console.error(`FILE: testing.js () | ERROR: \n`, error);
+    res.sendStatus(500);
+  });
 });
 
 
@@ -66,14 +62,12 @@ router.get('/gmail/labels', (req, res) => {
 router.get('/gmail/filters', (req, res) => {
   let token = gapi.getToken(config.get('testUser.accessToken'), config.get('testUser.refreshToken'));
   let gmail = gapi.getGmail(token);
-  gapi.getFilters(gmail)
-    .then(result => {
-      res.send(result);
-    })
-    .catch(error => {
-    	console.error(`FILE: testing.js () | ERROR: \n`, error);
-    	res.sendStatus(500);
-    })
+  gapi.getFilters(gmail).then(result => {
+    res.send(result);
+  }).catch(error => {
+    console.error(`FILE: testing.js () | ERROR: \n`, error);
+    res.sendStatus(500);
+  });
 });
 
 
@@ -84,19 +78,16 @@ router.get('/gmail/labels-filters', (req, res) => {
   let token = gapi.getToken(config.get('testUser.accessToken'), config.get('testUser.refreshToken'));
   let gmail = gapi.getGmail(token);
   let result = {};
-  gapi.getLabels(gmail)
-    .then(labels => {
-      result['labels'] = labels;
-      return gapi.getLabels(gmail);
-    })
-    .then(filters => {
-      result['filters'] = filters;
-    	res.send(result);
-    })
-    .catch(error => {
-    	console.error(`FILE: testing.js () | ERROR: \n`, error);
-    	res.sendStatus(500);
-    })
+  gapi.getLabels(gmail).then(labels => {
+    result[ 'labels' ] = labels;
+    return gapi.getLabels(gmail);
+  }).then(filters => {
+    result[ 'filters' ] = filters;
+    res.send(result);
+  }).catch(error => {
+    console.error(`FILE: testing.js () | ERROR: \n`, error);
+    res.sendStatus(500);
+  });
 });
 
 
@@ -106,16 +97,14 @@ router.get('/gmail/labels-filters', (req, res) => {
 router.get('/gmail/emails', (req, res) => {
   let token = gapi.getToken(config.get('testUser.accessToken'), config.get('testUser.refreshToken'));
   let gmail = gapi.getGmail(token);
-  gapi.getAllInfo(gmail)
-    .then(result => {
-      console.log(`FILE: testing.js | result: \n`, result);
-      let mail = emails.clean(result);
-      res.send(mail);
-    })
-    .catch(error => {
-      console.error(`FILE: testing.js | ERROR: \n`, error);
-      res.sendStatus(500);
-    });
+  gapi.getAllInfo(gmail).then(result => {
+    console.log(`FILE: testing.js | result: \n`, result);
+    let mail = emails.clean(result);
+    res.send(mail);
+  }).catch(error => {
+    console.error(`FILE: testing.js | ERROR: \n`, error);
+    res.sendStatus(500);
+  });
 });
 
 
@@ -128,23 +117,21 @@ router.get('/gmail/filters/add', (req, res) => {
   let filter = {
     criteria: {
       from: '(testCreateFilter0FROM@gmail.com),(testCreateFilter1FROM@gmail.com)',
-      to: 'testCreateFilter123@gmail.com'
+      to: 'testCreateFilter123@gmail.com',
     },
     action: {
       removeLabelIds: [
-        'INBOX'
-      ]
-    }
+        'INBOX',
+      ],
+    },
   };
-  gapi.createFilter(gmail, filter)
-    .then(result => {
-      console.log(`FILE: testing.js () | result: \n`, result);
-      res.sendStatus(200);
-    })
-    .catch(error => {
-      console.error(`FILE: testing.js | ERROR: \n`, error);
-      res.sendStatus(500);
-    });
+  gapi.createFilter(gmail, filter).then(result => {
+    console.log(`FILE: testing.js () | result: \n`, result);
+    res.sendStatus(200);
+  }).catch(error => {
+    console.error(`FILE: testing.js | ERROR: \n`, error);
+    res.sendStatus(500);
+  });
 });
 
 
@@ -155,16 +142,14 @@ router.get('/gmail/labels/add', (req, res) => {
   let token = gapi.getToken(config.get('testUser.accessToken'), config.get('testUser.refreshToken'));
   let gmail = gapi.getGmail(token);
   let label = {
-    name: 'testCreateLabel'
+    name: 'testCreateLabel',
   };
-  gapi.createLabel(gmail, label)
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch(error => {
-      console.error(`FILE: testing.js | ERROR: \n`, error);
-      res.sendStatus(500);
-    });
+  gapi.createLabel(gmail, label).then(() => {
+    res.sendStatus(200);
+  }).catch(error => {
+    console.error(`FILE: testing.js | ERROR: \n`, error);
+    res.sendStatus(500);
+  });
 });
 
 
@@ -174,36 +159,29 @@ router.get('/gmail/labels/add', (req, res) => {
 router.delete('/gmail/filter', (req, res) => {
   let token = gapi.getToken(config.get('testUser.accessToken'), config.get('testUser.refreshToken'));
   let gmail = gapi.getGmail(token);
-  gapi.deleteFilter(gmail, req.query.filterId)
-    .then(() => {
-    	res.sendStatus(200);
-    })
-    .catch(error => {
-      console.log(`FILE: testing.js DELETE /gmail/filter error:`, error);
-      res.sendStatus(500);
-    });
+  gapi.deleteFilter(gmail, req.query.filterId).then(() => {
+    res.sendStatus(200);
+  }).catch(error => {
+    console.log(`FILE: testing.js DELETE /gmail/filter error:`, error);
+    res.sendStatus(500);
+  });
 });
-
 
 
 router.post('/gmail/filter', (req, res) => {
   let token = gapi.getToken(config.get('testUser.accessToken'), config.get('testUser.refreshToken'));
   let gmail = gapi.getGmail(token);
   
-  gapi.createFilter(gmail, req.body)
-  .then(result => {
-  	console.log(`FILE: testing.js | result: \n`, result);
-  	res.sendStatus(200);
-  })
-  .catch(error => {
-  	console.error(`FILE: testing.js | ERROR: \n`, error);
+  gapi.createFilter(gmail, req.body).then(result => {
+    console.log(`FILE: testing.js | result: \n`, result);
+    res.sendStatus(200);
+  }).catch(error => {
+    console.error(`FILE: testing.js | ERROR: \n`, error);
     res.sendStatus(500);
   });
   
   
 });
-
-
 
 
 // --------------------------------------------------------------------------------------------------
@@ -222,7 +200,7 @@ router.get('/gmail/emails0', (req, res) => {
  * Get dummy filters
  */
 router.get('/gmail/filters0', (req, res) => {
-	res.send(dummyFilters);
+  res.send(dummyFilters);
 });
 
 
@@ -231,7 +209,7 @@ router.get('/gmail/filters0', (req, res) => {
  */
 router.get('/gmail/labels0', (req, res) => {
   let labels = emails.sortLabels(dummyLabels);
-	res.send(labels);
+  res.send(labels);
 });
 
 
@@ -239,14 +217,13 @@ router.get('/gmail/labels0', (req, res) => {
  * Get labels & filters
  */
 router.get('/gmail/labels-filters0', (req, res) => {
- 
-	let result = {
-	  labels: emails.cleanLabels(dummyLabels),
-    filters: emails.cleanFilters(dummyFilters, emails.cleanLabels(dummyLabels))
+  
+  let result = {
+    labels: emails.cleanLabels(dummyLabels),
+    filters: emails.cleanFilters(dummyFilters, emails.cleanLabels(dummyLabels)),
   };
   res.send(result);
 });
-
 
 
 // --------------------------------------------------------------------------------------------------

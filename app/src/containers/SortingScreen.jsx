@@ -10,7 +10,6 @@ class SortingScreen extends Component {
   render() {
     return (
         <MDBContainer fluid>
-          <h1>Sorting Screen</h1>
           <FiltersModal/>
           <CurrentFiltersTable/>
         </MDBContainer>

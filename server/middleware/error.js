@@ -8,9 +8,8 @@ router.use(Sentry.Handlers.errorHandler());
 router.use(function onError(err, req, res, next) {
   console.log('error handling her');
   res.statusCode = 500;
-  res.end(`Sentry Error Code: ${res.sentry}`);
+  res.end(`Sentry Error Code: ${ res.sentry }`);
 });
-
 
 
 module.exports = router;

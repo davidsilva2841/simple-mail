@@ -51,4 +51,16 @@ export function deleteFilter(filterId) {
 }
 
 
+/**
+ * Create a label
+ * @param body
+ * @returns {*}
+ */
+export function createLabel (body) {
+	return api.post('/gmail/label', body);
+}
+
+
+
+
 export default api;
